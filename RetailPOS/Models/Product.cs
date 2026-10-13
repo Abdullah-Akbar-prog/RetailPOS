@@ -17,4 +17,6 @@ public class Product
     public int ReorderLevel { get; set; } = 5;
 
     public bool IsActive { get; set; } = true;
+    public Brand Brand { get; set; } = null;
+    public Category Category { get; set; } = null;
 }

@@ -10,11 +10,13 @@ public class PosDbContext : DbContext
     {
     }
 
-    public DbSet<Product> Products => Set<Product>();
+    public DbSet<Product> Products { get; set; }
 
-    public DbSet<Sale> Sales => Set<Sale>();
+    public DbSet<Sale> Sales { get; set; }
 
-    public DbSet<SaleItem> SaleItems => Set<SaleItem>();
+    public DbSet<SaleItem> SaleDetails { get; set; }
 
+    public DbSet<Brand> Brands { get; set; }
 
+    public DbSet<Category> Categories { get; set; }
 }
