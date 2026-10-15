@@ -20,22 +20,25 @@ public partial class ProductViewModel : ObservableObject
     private Product? selectedProduct;
 
     [ObservableProperty]
-    private string productName = string.Empty;
+    private string name = string.Empty;
 
     [ObservableProperty]
     private string sku = string.Empty;
 
     [ObservableProperty]
-    private decimal purchasePrice;
+    private decimal costPrice;
 
     [ObservableProperty]
-    private decimal salePrice;
+    private decimal sellingPrice;
 
     [ObservableProperty]
     private int stockQuantity;
 
     [ObservableProperty]
-    private int minimumStockLevel = 5;
+    private int reorderLevel = 5;
+
+    [ObservableProperty]
+    private bool isActive = true;
 
     [ObservableProperty]
     private Brand? selectedBrand;
@@ -76,16 +79,18 @@ public partial class ProductViewModel : ObservableObject
     [RelayCommand]
     private async Task SaveAsync()
     {
-        if (string.IsNullOrWhiteSpace(ProductName) ||
-            string.IsNullOrWhiteSpace(SKU) ||
+        if (string.IsNullOrWhiteSpace(Name) ||
+            string.IsNullOrWhiteSpace(Sku) ||
             SelectedBrand is null ||
             SelectedCategory is null)
         {
             return;
         }
 
-        if (PurchasePrice < 0 || SalePrice < 0 ||
-            StockQuantity < 0 || MinimumStockLevel < 0)
+        if (CostPrice < 0 ||
+            SellingPrice < 0 ||
+            StockQuantity < 0 ||
+            ReorderLevel < 0)
         {
             return;
         }
@@ -94,28 +99,30 @@ public partial class ProductViewModel : ObservableObject
         {
             var product = new Product
             {
-                ProductName = ProductName.Trim(),
-                SKU = SKU.Trim(),
-                PurchasePrice = PurchasePrice,
-                SalePrice = SalePrice,
+                Name = Name.Trim(),
+                SKU = Sku.Trim(),
+                CostPrice = CostPrice,
+                SellingPrice = SellingPrice,
                 StockQuantity = StockQuantity,
-                MinimumStockLevel = MinimumStockLevel,
-                BrandId = SelectedBrand.BrandId,
-                CategoryId = SelectedCategory.CategoryId
+                ReorderLevel = ReorderLevel,
+                IsActive = IsActive,
+                Brand = SelectedBrand,
+                Category = SelectedCategory
             };
 
             await _productService.AddAsync(product);
         }
         else
         {
-            SelectedProduct.ProductName = ProductName.Trim();
-            SelectedProduct.SKU = SKU.Trim();
-            SelectedProduct.PurchasePrice = PurchasePrice;
-            SelectedProduct.SalePrice = SalePrice;
+            SelectedProduct.Name = Name.Trim();
+            SelectedProduct.SKU = Sku.Trim();
+            SelectedProduct.CostPrice = CostPrice;
+            SelectedProduct.SellingPrice = SellingPrice;
             SelectedProduct.StockQuantity = StockQuantity;
-            SelectedProduct.MinimumStockLevel = MinimumStockLevel;
-            SelectedProduct.BrandId = SelectedBrand.BrandId;
-            SelectedProduct.CategoryId = SelectedCategory.CategoryId;
+            SelectedProduct.ReorderLevel = ReorderLevel;
+            SelectedProduct.IsActive = IsActive;
+            SelectedProduct.Brand = SelectedBrand;
+            SelectedProduct.Category = SelectedCategory;
 
             await _productService.UpdateAsync(SelectedProduct);
         }
@@ -130,18 +137,19 @@ public partial class ProductViewModel : ObservableObject
         if (SelectedProduct is null)
             return;
 
-        ProductName = SelectedProduct.ProductName;
-        SKU = SelectedProduct.SKU;
-        PurchasePrice = SelectedProduct.PurchasePrice;
-        SalePrice = SelectedProduct.SalePrice;
+        Name = SelectedProduct.Name;
+        Sku = SelectedProduct.SKU;
+        CostPrice = SelectedProduct.CostPrice;
+        SellingPrice = SelectedProduct.SellingPrice;
         StockQuantity = SelectedProduct.StockQuantity;
-        MinimumStockLevel = SelectedProduct.MinimumStockLevel;
+        ReorderLevel = SelectedProduct.ReorderLevel;
+        IsActive = SelectedProduct.IsActive;
 
         SelectedBrand = Brands.FirstOrDefault(
-            b => b.BrandId == SelectedProduct.BrandId);
+            b => b.BrandId == SelectedProduct.Brand.BrandId);
 
         SelectedCategory = Categories.FirstOrDefault(
-            c => c.CategoryId == SelectedProduct.CategoryId);
+            c => c.CategoryId == SelectedProduct.Category.CategoryId);
     }
 
     [RelayCommand]
@@ -150,7 +158,8 @@ public partial class ProductViewModel : ObservableObject
         if (SelectedProduct is null)
             return;
 
-        await _productService.DeleteAsync(SelectedProduct.ProductId);
+        await _productService.DeleteAsync(SelectedProduct.Id);
+
         Clear();
         await LoadAsync();
     }
@@ -159,12 +168,13 @@ public partial class ProductViewModel : ObservableObject
     private void Clear()
     {
         SelectedProduct = null;
-        ProductName = string.Empty;
-        SKU = string.Empty;
-        PurchasePrice = 0;
-        SalePrice = 0;
+        Name = string.Empty;
+        Sku = string.Empty;
+        CostPrice = 0;
+        SellingPrice = 0;
         StockQuantity = 0;
-        MinimumStockLevel = 5;
+        ReorderLevel = 5;
+        IsActive = true;
         SelectedBrand = null;
         SelectedCategory = null;
     }
