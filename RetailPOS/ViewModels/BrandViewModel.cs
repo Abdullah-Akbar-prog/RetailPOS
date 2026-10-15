@@ -24,7 +24,7 @@ public partial class BrandViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private async Task LoadAsync()
+    public async Task LoadAsync()
     {
         var brands = await _service.GetAllAsync();
 

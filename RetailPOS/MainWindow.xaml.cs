@@ -37,13 +37,13 @@ public partial class MainWindow : Window
             case "Brands":
                 PageTitle.Text = "Brand Management";
                 // Register BrandView and load it here.
-                MainContent.Content = CreatePlaceholder("Brand Management");
+                MainContent.Content = _serviceProvider.GetRequiredService<BrandView>();
                 break;
 
             case "Categories":
                 PageTitle.Text = "Category Management";
                 // Register CategoryView and load it here.
-                MainContent.Content = CreatePlaceholder("Category Management");
+                MainContent.Content = _serviceProvider.GetRequiredService<CategoryView>();
                 break;
 
             case "Sales":

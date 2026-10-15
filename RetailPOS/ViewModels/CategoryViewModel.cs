@@ -24,7 +24,7 @@ public partial class CategoryViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private async Task LoadAsync()
+    public async Task LoadAsync()
     {
         var categories = await _service.GetAllAsync();
 

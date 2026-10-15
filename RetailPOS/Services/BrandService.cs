@@ -6,40 +6,49 @@ namespace RetailPOS.Services;
 
 public class BrandService
 {
-    private readonly PosDbContext _context;
+    private readonly IDbContextFactory<PosDbContext> _contextFactory;
 
-    public BrandService(PosDbContext context)
+    public BrandService(IDbContextFactory<PosDbContext> contextFactory)
     {
-        _context = context;
+        _contextFactory = contextFactory;
     }
 
     public async Task<List<Brand>> GetAllAsync()
     {
-        return await _context.Brands
+        await using var context = await _contextFactory.CreateDbContextAsync();
+
+        return await context.Brands
             .AsNoTracking()
+            .OrderBy(b => b.BrandName)
             .ToListAsync();
     }
 
     public async Task AddAsync(Brand brand)
     {
-        _context.Brands.Add(brand);
-        await _context.SaveChangesAsync();
+        await using var context = await _contextFactory.CreateDbContextAsync();
+
+        context.Brands.Add(brand);
+        await context.SaveChangesAsync();
     }
 
     public async Task UpdateAsync(Brand brand)
     {
-        _context.Brands.Update(brand);
-        await _context.SaveChangesAsync();
+        await using var context = await _contextFactory.CreateDbContextAsync();
+
+        context.Brands.Update(brand);
+        await context.SaveChangesAsync();
     }
 
     public async Task DeleteAsync(int id)
     {
-        var brand = await _context.Brands.FindAsync(id);
+        await using var context = await _contextFactory.CreateDbContextAsync();
+
+        var brand = await context.Brands.FindAsync(id);
 
         if (brand is null)
             return;
 
-        _context.Brands.Remove(brand);
-        await _context.SaveChangesAsync();
+        context.Brands.Remove(brand);
+        await context.SaveChangesAsync();
     }
 }

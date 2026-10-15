@@ -31,8 +31,8 @@ namespace RetailPOS
                             "Check appsettings.json.");
                     }
 
-                    // Database
-                    services.AddDbContext<PosDbContext>(options =>
+                    // Database: create a separate DbContext when needed
+                    services.AddDbContextFactory<PosDbContext>(options =>
                         options.UseSqlServer(connectionString));
 
                     // Services
@@ -42,9 +42,13 @@ namespace RetailPOS
 
                     // ViewModels
                     services.AddTransient<ProductViewModel>();
+                    services.AddTransient<CategoryViewModel>();
+                    services.AddTransient<BrandViewModel>();
 
                     // Views
                     services.AddTransient<ProductView>();
+                    services.AddTransient<BrandView>();
+                    services.AddTransient<CategoryView>();
 
                     // Main Window
                     services.AddTransient<MainWindow>();
