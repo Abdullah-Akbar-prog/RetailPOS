@@ -48,7 +48,8 @@ public partial class MainWindow : Window
 
             case "Sales":
                 PageTitle.Text = "Point of Sale";
-                MainContent.Content = CreatePlaceholder("Point of Sale");
+                MainContent.Content =
+                     _serviceProvider.GetRequiredService<SaleView>();
                 break;
 
             case "SaleHistory":
