@@ -6,42 +6,63 @@ namespace RetailPOS.Services;
 
 public class ProductService
 {
-    private readonly PosDbContext _context;
+    private readonly IDbContextFactory<PosDbContext> _contextFactory;
 
-    public ProductService(PosDbContext context)
+    public ProductService(
+        IDbContextFactory<PosDbContext> contextFactory)
     {
-        _context = context;
+        _contextFactory = contextFactory;
     }
 
+    // Get all products with their Brand and Category
     public async Task<List<Product>> GetAllAsync()
     {
-        return await _context.Products
+        await using var context =
+            await _contextFactory.CreateDbContextAsync();
+
+        return await context.Products
             .Include(p => p.Brand)
             .Include(p => p.Category)
             .AsNoTracking()
+            .OrderBy(p => p.Name)
             .ToListAsync();
     }
 
+    // Add a new product
     public async Task AddAsync(Product product)
     {
-        _context.Products.Add(product);
-        await _context.SaveChangesAsync();
+        await using var context =
+            await _contextFactory.CreateDbContextAsync();
+
+        context.Products.Add(product);
+
+        await context.SaveChangesAsync();
     }
 
+    // Update an existing product
     public async Task UpdateAsync(Product product)
     {
-        _context.Products.Update(product);
-        await _context.SaveChangesAsync();
+        await using var context =
+            await _contextFactory.CreateDbContextAsync();
+
+        context.Products.Update(product);
+
+        await context.SaveChangesAsync();
     }
 
+    // Delete a product
     public async Task DeleteAsync(int id)
     {
-        var product = await _context.Products.FindAsync(id);
+        await using var context =
+            await _contextFactory.CreateDbContextAsync();
+
+        var product = await context.Products.FindAsync(id);
 
         if (product is null)
             return;
 
-        _context.Products.Remove(product);
-        await _context.SaveChangesAsync();
+        context.Products.Remove(product);
+
+        await context.SaveChangesAsync();
     }
 }

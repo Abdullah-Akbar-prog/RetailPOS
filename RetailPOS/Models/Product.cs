@@ -17,6 +17,12 @@ public class Product
     public int ReorderLevel { get; set; } = 5;
 
     public bool IsActive { get; set; } = true;
-    public Brand Brand { get; set; } = null;
-    public Category Category { get; set; } = null;
+    public int BrandId { get; set; }
+
+    public Brand Brand { get; set; } = null!;
+
+    // Foreign key to Category
+    public int CategoryId { get; set; }
+
+    public Category Category { get; set; } = null!;
 }

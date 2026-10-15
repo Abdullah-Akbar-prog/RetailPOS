@@ -106,8 +106,8 @@ public partial class ProductViewModel : ObservableObject
                 StockQuantity = StockQuantity,
                 ReorderLevel = ReorderLevel,
                 IsActive = IsActive,
-                Brand = SelectedBrand,
-                Category = SelectedCategory
+                BrandId = SelectedBrand.BrandId,
+                CategoryId = SelectedCategory.CategoryId
             };
 
             await _productService.AddAsync(product);
@@ -121,8 +121,8 @@ public partial class ProductViewModel : ObservableObject
             SelectedProduct.StockQuantity = StockQuantity;
             SelectedProduct.ReorderLevel = ReorderLevel;
             SelectedProduct.IsActive = IsActive;
-            SelectedProduct.Brand = SelectedBrand;
-            SelectedProduct.Category = SelectedCategory;
+            SelectedProduct.BrandId = SelectedBrand.BrandId;
+            SelectedProduct.CategoryId = SelectedCategory.CategoryId;
 
             await _productService.UpdateAsync(SelectedProduct);
         }

@@ -6,40 +6,61 @@ namespace RetailPOS.Services;
 
 public class CategoryService
 {
-    private readonly PosDbContext _context;
+    private readonly IDbContextFactory<PosDbContext> _contextFactory;
 
-    public CategoryService(PosDbContext context)
+    public CategoryService(
+        IDbContextFactory<PosDbContext> contextFactory)
     {
-        _context = context;
+        _contextFactory = contextFactory;
     }
 
+    // Get all categories
     public async Task<List<Category>> GetAllAsync()
     {
-        return await _context.Categories
+        await using var context =
+            await _contextFactory.CreateDbContextAsync();
+
+        return await context.Categories
             .AsNoTracking()
+            .OrderBy(c => c.CategoryName)
             .ToListAsync();
     }
 
+    // Add a new category
     public async Task AddAsync(Category category)
     {
-        _context.Categories.Add(category);
-        await _context.SaveChangesAsync();
+        await using var context =
+            await _contextFactory.CreateDbContextAsync();
+
+        context.Categories.Add(category);
+
+        await context.SaveChangesAsync();
     }
 
+    // Update an existing category
     public async Task UpdateAsync(Category category)
     {
-        _context.Categories.Update(category);
-        await _context.SaveChangesAsync();
+        await using var context =
+            await _contextFactory.CreateDbContextAsync();
+
+        context.Categories.Update(category);
+
+        await context.SaveChangesAsync();
     }
 
+    // Delete a category
     public async Task DeleteAsync(int id)
     {
-        var category = await _context.Categories.FindAsync(id);
+        await using var context =
+            await _contextFactory.CreateDbContextAsync();
+
+        var category = await context.Categories.FindAsync(id);
 
         if (category is null)
             return;
 
-        _context.Categories.Remove(category);
-        await _context.SaveChangesAsync();
+        context.Categories.Remove(category);
+
+        await context.SaveChangesAsync();
     }
 }
