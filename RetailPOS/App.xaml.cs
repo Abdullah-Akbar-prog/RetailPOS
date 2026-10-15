@@ -19,11 +19,21 @@ namespace RetailPOS
             AppHost = Host.CreateDefaultBuilder()
                 .ConfigureServices((context, services) =>
                 {
+                    // Read the connection string
+                    var connectionString =
+                        context.Configuration.GetConnectionString(
+                            "DefaultConnection");
+
+                    if (string.IsNullOrWhiteSpace(connectionString))
+                    {
+                        throw new InvalidOperationException(
+                            "Connection string 'DefaultConnection' was not found. " +
+                            "Check appsettings.json.");
+                    }
+
                     // Database
                     services.AddDbContext<PosDbContext>(options =>
-                        options.UseSqlServer(
-                            context.Configuration
-                                .GetConnectionString("DefaultConnection")));
+                        options.UseSqlServer(connectionString));
 
                     // Services
                     services.AddTransient<ProductService>();

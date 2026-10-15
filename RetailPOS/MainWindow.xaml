@@ -9,113 +9,6 @@
         WindowStartupLocation="CenterScreen"
         Background="#F4F6FA">
 
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="230"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-
-        <!-- Sidebar -->
-        <Border Grid.Column="0" Background="#172033">
-            <DockPanel>
-
-                <StackPanel DockPanel.Dock="Top" Margin="20,25,20,25">
-                    <TextBlock Text="RetailPOS"
-                               FontSize="28"
-                               FontWeight="Bold"
-                               Foreground="White"/>
-
-                    <TextBlock Text="Inventory &amp; Sales"
-                               FontSize="12"
-                               Foreground="#AAB5CC"
-                               Margin="0,5,0,0"/>
-                </StackPanel>
-
-                <StackPanel>
-                    <TextBlock Text="MAIN MENU"
-                               Foreground="#8491A8"
-                               FontSize="11"
-                               FontWeight="SemiBold"
-                               Margin="20,5,10,12"/>
-
-                    <Button Content="Dashboard"
-                            Tag="Dashboard"
-                            Click="Navigation_Click"
-                            Style="{StaticResource NavButton}"/>
-
-                    <Button Content="Products"
-                            Tag="Products"
-                            Click="Navigation_Click"
-                            Style="{StaticResource NavButton}"/>
-
-                    <Button Content="Brands"
-                            Tag="Brands"
-                            Click="Navigation_Click"
-                            Style="{StaticResource NavButton}"/>
-
-                    <Button Content="Categories"
-                            Tag="Categories"
-                            Click="Navigation_Click"
-                            Style="{StaticResource NavButton}"/>
-
-                    <Button Content="Sales / POS"
-                            Tag="Sales"
-                            Click="Navigation_Click"
-                            Style="{StaticResource NavButton}"/>
-
-                    <Button Content="Sale History"
-                            Tag="SaleHistory"
-                            Click="Navigation_Click"
-                            Style="{StaticResource NavButton}"/>
-                </StackPanel>
-
-                <StackPanel DockPanel.Dock="Bottom" Margin="20">
-                    <Separator Background="#354158" Margin="0,0,0,12"/>
-
-                    <TextBlock Text="RetailPOS v1.0"
-                               Foreground="#AAB5CC"
-                               FontSize="12"/>
-                </StackPanel>
-
-            </DockPanel>
-        </Border>
-
-        <!-- Main Content -->
-        <Grid Grid.Column="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="70"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-
-            <!-- Top Bar -->
-            <Border Grid.Row="0"
-                    Background="White"
-                    BorderBrush="#E5E9F0"
-                    BorderThickness="0,0,0,1">
-
-                <Grid Margin="25,0">
-                    <TextBlock x:Name="PageTitle"
-                               Text="Dashboard"
-                               FontSize="22"
-                               FontWeight="SemiBold"
-                               Foreground="#202938"
-                               VerticalAlignment="Center"/>
-
-                    <TextBlock Text="Inventory Management System"
-                               Foreground="#7A8497"
-                               HorizontalAlignment="Right"
-                               VerticalAlignment="Center"/>
-                </Grid>
-            </Border>
-
-            <!-- Views appear here -->
-            <ContentControl x:Name="MainContent"
-                            Grid.Row="1"
-                            Margin="0"/>
-        </Grid>
-    </Grid>
-
-    <!-- Sidebar Button Style -->
     <Window.Resources>
         <Style x:Key="NavButton" TargetType="Button">
             <Setter Property="Height" Value="46"/>
@@ -154,4 +47,114 @@
             </Setter>
         </Style>
     </Window.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="230"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Sidebar -->
+        <Border Grid.Column="0" Background="#172033">
+            <DockPanel LastChildFill="True">
+
+                <!-- Footer -->
+                <StackPanel DockPanel.Dock="Bottom"
+                            Margin="20,15,20,20">
+                    <Separator Background="#354158"
+                               Margin="0,0,0,12"/>
+                    <TextBlock Text="RetailPOS v1.0"
+                               Foreground="#AAB5CC"
+                               FontSize="12"/>
+                </StackPanel>
+
+                <!-- Logo -->
+                <StackPanel DockPanel.Dock="Top"
+                            Margin="20,25,20,25">
+                    <TextBlock Text="RetailPOS"
+                               FontSize="28"
+                               FontWeight="Bold"
+                               Foreground="White"/>
+                    <TextBlock Text="Inventory &amp; Sales"
+                               FontSize="12"
+                               Foreground="#AAB5CC"
+                               Margin="0,5,0,0"/>
+                </StackPanel>
+
+                <!-- Navigation -->
+                <StackPanel>
+                    <TextBlock Text="MAIN MENU"
+                               Foreground="#8491A8"
+                               FontSize="11"
+                               FontWeight="SemiBold"
+                               Margin="20,5,10,12"/>
+
+                    <Button Content="Dashboard"
+                            Tag="Dashboard"
+                            Click="Navigation_Click"
+                            Style="{StaticResource NavButton}"/>
+
+                    <Button Content="Products"
+                            Tag="Products"
+                            Click="Navigation_Click"
+                            Style="{StaticResource NavButton}"/>
+
+                    <Button Content="Brands"
+                            Tag="Brands"
+                            Click="Navigation_Click"
+                            Style="{StaticResource NavButton}"/>
+
+                    <Button Content="Categories"
+                            Tag="Categories"
+                            Click="Navigation_Click"
+                            Style="{StaticResource NavButton}"/>
+
+                    <Button Content="Sales / POS"
+                            Tag="Sales"
+                            Click="Navigation_Click"
+                            Style="{StaticResource NavButton}"/>
+
+                    <Button Content="Sale History"
+                            Tag="SaleHistory"
+                            Click="Navigation_Click"
+                            Style="{StaticResource NavButton}"/>
+                </StackPanel>
+
+            </DockPanel>
+        </Border>
+
+        <!-- Main Area -->
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="70"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Top Header -->
+            <Border Grid.Row="0"
+                    Background="White"
+                    BorderBrush="#E5E9F0"
+                    BorderThickness="0,0,0,1">
+
+                <Grid Margin="25,0">
+                    <TextBlock x:Name="PageTitle"
+                               Text="Dashboard"
+                               FontSize="22"
+                               FontWeight="SemiBold"
+                               Foreground="#202938"
+                               VerticalAlignment="Center"/>
+
+                    <TextBlock Text="Inventory Management System"
+                               Foreground="#7A8497"
+                               HorizontalAlignment="Right"
+                               VerticalAlignment="Center"/>
+                </Grid>
+            </Border>
+
+            <!-- Page Content -->
+            <ContentControl x:Name="MainContent"
+                            Grid.Row="1"
+                            Margin="0"/>
+        </Grid>
+    </Grid>
 </Window>
