@@ -8,162 +8,283 @@
         MinWidth="1000"
         WindowStartupLocation="CenterScreen"
         Background="#F5F7FB"
-        Foreground="#1E293B"
-        FontFamily="Segoe UI">
+        FontFamily="Segoe UI"
+        Foreground="#1E293B">
 
     <Window.Resources>
+
+        <!-- Colors -->
         <SolidColorBrush x:Key="AccentBrush" Color="#0D9488"/>
         <SolidColorBrush x:Key="PageBrush" Color="#F5F7FB"/>
         <SolidColorBrush x:Key="SidebarBrush" Color="#FFFFFF"/>
         <SolidColorBrush x:Key="BorderBrushLight" Color="#E5EAF2"/>
         <SolidColorBrush x:Key="TextBrush" Color="#1E293B"/>
         <SolidColorBrush x:Key="MutedBrush" Color="#64748B"/>
-        
+
+        <!-- Navigation Button -->
         <Style x:Key="NavButton" TargetType="{x:Type Button}">
             <Setter Property="Height" Value="46"/>
-            <Setter Property="Margin" Value="10,3"/>
-            <Setter Property="Padding" Value="18,0"/>
+            <Setter Property="Margin" Value="12,3"/>
+            <Setter Property="Padding" Value="15,0"/>
             <Setter Property="HorizontalContentAlignment" Value="Left"/>
             <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Foreground" Value="#D5DCEC"/>
+            <Setter Property="Foreground" Value="#64748B"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Medium"/>
             <Setter Property="Cursor" Value="Hand"/>
-
             <Setter Property="Template">
                 <Setter.Value>
-                    <ControlTemplate TargetType="Button">
+                    <ControlTemplate TargetType="{x:Type Button}">
                         <Border x:Name="ButtonBorder"
                                 Background="{TemplateBinding Background}"
-                                CornerRadius="7">
+                                CornerRadius="8">
                             <ContentPresenter
+                                Margin="{TemplateBinding Padding}"
                                 VerticalAlignment="Center"
-                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                Margin="{TemplateBinding Padding}"/>
+                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
                         </Border>
-
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter TargetName="ButtonBorder"
                                         Property="Background"
-                                        Value="#29364D"/>
+                                        Value="#E8F7F5"/>
                                 <Setter Property="Foreground"
-                                        Value="White"/>
+                                        Value="#0D9488"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="ButtonBorder"
+                                        Property="Background"
+                                        Value="#D2F0EC"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.5"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
+
+        <!-- Primary Action Button -->
+        <Style x:Key="PrimaryButton" TargetType="{x:Type Button}">
+            <Setter Property="Background" Value="#0D9488"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Padding" Value="18,10"/>
+            <Setter Property="Margin" Value="4"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="ButtonBorder"
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="7">
+                            <ContentPresenter
+                                Margin="{TemplateBinding Padding}"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="ButtonBorder"
+                                        Property="Background"
+                                        Value="#0F766E"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="ButtonBorder"
+                                        Property="Opacity" Value="0.85"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Page Heading -->
+        <Style x:Key="PageHeading" TargetType="{x:Type TextBlock}">
+            <Setter Property="FontSize" Value="25"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="#1E293B"/>
+            <Setter Property="Margin" Value="0,0,0,18"/>
+        </Style>
+
     </Window.Resources>
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="230"/>
+            <ColumnDefinition Width="245"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
         <!-- Sidebar -->
-        <Border Grid.Column="0" Background="#172033">
+        <Border Grid.Column="0"
+                Background="{StaticResource SidebarBrush}"
+                BorderBrush="#E5EAF2"
+                BorderThickness="0,0,1,0">
+
             <DockPanel LastChildFill="True">
 
-                <!-- Footer -->
+                <!-- Sidebar Footer -->
                 <StackPanel DockPanel.Dock="Bottom"
-                            Margin="20,15,20,20">
-                    <Separator Background="#354158"
-                               Margin="0,0,0,12"/>
+                            Margin="22,16,22,22">
+                    <Separator Background="#E5EAF2" Margin="0,0,0,14"/>
+
                     <TextBlock Text="RetailPOS v1.0"
-                               Foreground="#AAB5CC"
-                               FontSize="12"/>
+                               FontSize="12"
+                               Foreground="#94A3B8"/>
+
+                    <TextBlock Text="Inventory &amp; Sales Management"
+                               FontSize="10"
+                               Foreground="#94A3B8"
+                               Margin="0,4,0,0"/>
                 </StackPanel>
 
-                <!-- Logo -->
+                <!-- Brand Header -->
                 <StackPanel DockPanel.Dock="Top"
-                            Margin="20,25,20,25">
+                            Margin="22,26,20,30">
+
+                    <Border Width="44"
+                            Height="44"
+                            HorizontalAlignment="Left"
+                            Background="#0D9488"
+                            CornerRadius="12"
+                            Margin="0,0,0,14">
+                        <TextBlock Text="R"
+                                   Foreground="White"
+                                   FontSize="25"
+                                   FontWeight="Bold"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"/>
+                    </Border>
+
                     <TextBlock Text="RetailPOS"
-                               FontSize="28"
+                               FontSize="24"
                                FontWeight="Bold"
-                               Foreground="White"/>
+                               Foreground="#0F172A"/>
+
                     <TextBlock Text="Inventory &amp; Sales"
                                FontSize="12"
-                               Foreground="#AAB5CC"
+                               Foreground="#94A3B8"
                                Margin="0,5,0,0"/>
                 </StackPanel>
 
                 <!-- Navigation -->
-                <StackPanel>
-                    <TextBlock Text="MAIN MENU"
-                               Foreground="#8491A8"
-                               FontSize="11"
-                               FontWeight="SemiBold"
-                               Margin="20,5,10,12"/>
+                <ScrollViewer VerticalScrollBarVisibility="Auto"
+                              HorizontalScrollBarVisibility="Disabled">
 
-                    <Button Content="Dashboard"
-                            Tag="Dashboard"
-                            Click="Navigation_Click"
-                            Style="{StaticResource NavButton}"/>
+                    <StackPanel>
+                        <TextBlock Text="WORKSPACE"
+                                   Foreground="#94A3B8"
+                                   FontSize="11"
+                                   FontWeight="SemiBold"
+                                   Margin="24,0,10,12"/>
 
-                    <Button Content="Products"
-                            Tag="Products"
-                            Click="Navigation_Click"
-                            Style="{StaticResource NavButton}"/>
+                        <Button Content="◫   Dashboard"
+                                Tag="Dashboard"
+                                Click="Navigation_Click"
+                                Style="{StaticResource NavButton}"/>
 
-                    <Button Content="Brands"
-                            Tag="Brands"
-                            Click="Navigation_Click"
-                            Style="{StaticResource NavButton}"/>
+                        <Button Content="▦   Products"
+                                Tag="Products"
+                                Click="Navigation_Click"
+                                Style="{StaticResource NavButton}"/>
 
-                    <Button Content="Categories"
-                            Tag="Categories"
-                            Click="Navigation_Click"
-                            Style="{StaticResource NavButton}"/>
+                        <Button Content="◇   Brands"
+                                Tag="Brands"
+                                Click="Navigation_Click"
+                                Style="{StaticResource NavButton}"/>
 
-                    <Button Content="Sales / POS"
-                            Tag="Sales"
-                            Click="Navigation_Click"
-                            Style="{StaticResource NavButton}"/>
+                        <Button Content="▤   Categories"
+                                Tag="Categories"
+                                Click="Navigation_Click"
+                                Style="{StaticResource NavButton}"/>
 
-                    <Button Content="Sale History"
-                            Tag="SaleHistory"
-                            Click="Navigation_Click"
-                            Style="{StaticResource NavButton}"/>
-                </StackPanel>
+                        <TextBlock Text="SALES"
+                                   Foreground="#94A3B8"
+                                   FontSize="11"
+                                   FontWeight="SemiBold"
+                                   Margin="24,24,10,12"/>
 
+                        <Button Content="＋   Point of Sale"
+                                Tag="Sales"
+                                Click="Navigation_Click"
+                                Style="{StaticResource NavButton}"/>
+
+                        <Button Content="▧   Sale History"
+                                Tag="SaleHistory"
+                                Click="Navigation_Click"
+                                Style="{StaticResource NavButton}"/>
+                    </StackPanel>
+                </ScrollViewer>
             </DockPanel>
         </Border>
 
         <!-- Main Area -->
-        <Grid Grid.Column="1">
+        <Grid Grid.Column="1"
+              Background="{StaticResource PageBrush}">
+
             <Grid.RowDefinitions>
-                <RowDefinition Height="70"/>
+                <RowDefinition Height="76"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
             <!-- Top Header -->
             <Border Grid.Row="0"
                     Background="White"
-                    BorderBrush="#E5E9F0"
+                    BorderBrush="#E5EAF2"
                     BorderThickness="0,0,0,1">
 
-                <Grid Margin="25,0">
-                    <TextBlock x:Name="PageTitle"
-                               Text="Dashboard"
-                               FontSize="22"
-                               FontWeight="SemiBold"
-                               Foreground="#202938"
-                               VerticalAlignment="Center"/>
+                <Grid Margin="30,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
 
-                    <TextBlock Text="Inventory Management System"
-                               Foreground="#7A8497"
-                               HorizontalAlignment="Right"
-                               VerticalAlignment="Center"/>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock x:Name="PageTitle"
+                                   Text="Dashboard"
+                                   FontSize="21"
+                                   FontWeight="SemiBold"
+                                   Foreground="#1E293B"/>
+
+                        <TextBlock Text="Welcome to your workspace"
+                                   FontSize="12"
+                                   Foreground="#94A3B8"
+                                   Margin="0,4,0,0"/>
+                    </StackPanel>
+
+                    <Border Grid.Column="1"
+                            Background="#E8F7F5"
+                            CornerRadius="20"
+                            Padding="14,8"
+                            VerticalAlignment="Center">
+
+                        <StackPanel Orientation="Horizontal">
+                            <Ellipse Width="8"
+                                     Height="8"
+                                     Fill="#0D9488"
+                                     VerticalAlignment="Center"
+                                     Margin="0,0,8,0"/>
+
+                            <TextBlock Text="System Ready"
+                                       Foreground="#0F766E"
+                                       FontSize="12"
+                                       FontWeight="SemiBold"
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Border>
                 </Grid>
             </Border>
 
             <!-- Page Content -->
             <ContentControl x:Name="MainContent"
                             Grid.Row="1"
-                            Margin="0"/>
+                            Margin="26"
+                            HorizontalContentAlignment="Stretch"
+                            VerticalContentAlignment="Stretch"/>
         </Grid>
     </Grid>
 </Window>
