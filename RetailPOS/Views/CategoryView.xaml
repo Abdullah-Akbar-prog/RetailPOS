@@ -5,6 +5,12 @@
              FontFamily="Segoe UI">
 
     <UserControl.Resources>
+
+        <SolidColorBrush x:Key="AccentBrush" Color="#0D9488"/>
+        <SolidColorBrush x:Key="MutedBrush" Color="#64748B"/>
+        <SolidColorBrush x:Key="CardBorderBrush" Color="#E5EAF2"/>
+
+        <!-- TextBox Style -->
         <Style x:Key="CategoryTextBox" TargetType="{x:Type TextBox}">
             <Setter Property="Height" Value="40"/>
             <Setter Property="Padding" Value="10,7"/>
@@ -14,8 +20,10 @@
             <Setter Property="BorderBrush" Value="#CBD5E1"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="CaretBrush" Value="#0D9488"/>
         </Style>
 
+        <!-- Button Style -->
         <Style x:Key="CategoryButton" TargetType="{x:Type Button}">
             <Setter Property="Padding" Value="16,10"/>
             <Setter Property="Margin" Value="0,0,8,0"/>
@@ -25,6 +33,7 @@
             <Setter Property="Cursor" Value="Hand"/>
         </Style>
 
+        <!-- DataGrid Style -->
         <Style x:Key="CategoryGrid" TargetType="{x:Type DataGrid}">
             <Setter Property="Background" Value="White"/>
             <Setter Property="Foreground" Value="#334155"/>
@@ -33,19 +42,87 @@
             <Setter Property="AlternatingRowBackground" Value="#F8FAFC"/>
             <Setter Property="GridLinesVisibility" Value="Horizontal"/>
             <Setter Property="HorizontalGridLinesBrush" Value="#EDF1F5"/>
+            <Setter Property="VerticalGridLinesBrush" Value="#EDF1F5"/>
             <Setter Property="RowHeight" Value="44"/>
             <Setter Property="ColumnHeaderHeight" Value="42"/>
-            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontSize" Value="12"/>
             <Setter Property="CanUserAddRows" Value="False"/>
             <Setter Property="IsReadOnly" Value="True"/>
+            <Setter Property="AutoGenerateColumns" Value="False"/>
+            <Setter Property="SelectionMode" Value="Single"/>
+            <Setter Property="SelectionUnit" Value="FullRow"/>
+            <Setter Property="CanUserResizeRows" Value="False"/>
+            <Setter Property="CanUserSortColumns" Value="True"/>
         </Style>
+
+        <!-- Table Header -->
+        <Style x:Key="CategoryColumnHeader"
+               TargetType="{x:Type DataGridColumnHeader}">
+            <Setter Property="Background" Value="#F8FAFC"/>
+            <Setter Property="Foreground" Value="#475569"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="Padding" Value="10,8"/>
+            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+            <Setter Property="BorderBrush" Value="#E5EAF2"/>
+        </Style>
+
+        <!-- Table Cell: Teal selection instead of blue -->
+        <Style x:Key="CategoryCellStyle"
+               TargetType="{x:Type DataGridCell}">
+            <Setter Property="Padding" Value="8,4"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Foreground" Value="#334155"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="#E6F6F3"/>
+                    <Setter Property="Foreground" Value="#115E59"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Table Row: Matching Product Inventory -->
+        <Style x:Key="CategoryRowStyle"
+               TargetType="{x:Type DataGridRow}">
+            <Setter Property="Foreground" Value="#334155"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="#E6F6F3"/>
+                    <Setter Property="Foreground" Value="#115E59"/>
+                    <Setter Property="BorderBrush" Value="#99F6E4"/>
+                    <Setter Property="BorderThickness" Value="0,1,0,1"/>
+                </Trigger>
+
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="IsMouseOver" Value="True"/>
+                        <Condition Property="IsSelected" Value="False"/>
+                    </MultiTrigger.Conditions>
+                    <Setter Property="Background" Value="#F0FDFA"/>
+                </MultiTrigger>
+
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Foreground" Value="#94A3B8"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
     </UserControl.Resources>
 
     <ScrollViewer VerticalScrollBarVisibility="Auto"
                   HorizontalScrollBarVisibility="Disabled">
+
         <StackPanel Margin="26">
 
-            <!-- Header -->
+            <!-- Page Header -->
             <Grid Margin="0,0,0,24">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -70,13 +147,13 @@
                         Padding="12,8"
                         VerticalAlignment="Center">
                     <TextBlock Text="Categories"
-                               Foreground="#0F766E"
                                FontSize="12"
-                               FontWeight="SemiBold"/>
+                               FontWeight="SemiBold"
+                               Foreground="#0F766E"/>
                 </Border>
             </Grid>
 
-            <!-- Category Form -->
+            <!-- Category Form Card -->
             <Border Background="White"
                     CornerRadius="14"
                     Padding="22"
@@ -90,7 +167,7 @@
                                FontWeight="SemiBold"
                                Foreground="#1E293B"/>
 
-                    <TextBlock Text="Enter the category name below."
+                    <TextBlock Text="Enter the category information below."
                                FontSize="12"
                                Foreground="#94A3B8"
                                Margin="0,5,0,20"/>
@@ -106,6 +183,7 @@
                              ToolTip="Enter category name"
                              Margin="0,0,0,18"/>
 
+                    <!-- Action Buttons -->
                     <WrapPanel>
                         <Button Content="Save Category"
                                 Command="{Binding SaveCommand}"
@@ -134,7 +212,7 @@
                 </StackPanel>
             </Border>
 
-            <!-- Category List -->
+            <!-- Category Inventory Card -->
             <Border Background="White"
                     CornerRadius="14"
                     Padding="20"
@@ -142,7 +220,7 @@
                     BorderThickness="1">
 
                 <StackPanel>
-                    <TextBlock Text="Category List"
+                    <TextBlock Text="Category Inventory"
                                FontSize="17"
                                FontWeight="SemiBold"
                                Foreground="#1E293B"/>
@@ -154,25 +232,21 @@
 
                     <DataGrid ItemsSource="{Binding Categories}"
                               SelectedItem="{Binding SelectedCategory, Mode=TwoWay}"
-                              AutoGenerateColumns="False"
                               Style="{StaticResource CategoryGrid}"
                               MinHeight="220"
-                              MaxHeight="400"
-                              SelectionMode="Single"
-                              SelectionUnit="FullRow"
-                              CanUserResizeRows="False">
+                              MaxHeight="400">
 
                         <DataGrid.ColumnHeaderStyle>
-                            <Style TargetType="{x:Type DataGridColumnHeader}">
-                                <Setter Property="Background" Value="#F8FAFC"/>
-                                <Setter Property="Foreground" Value="#475569"/>
-                                <Setter Property="FontWeight" Value="SemiBold"/>
-                                <Setter Property="FontSize" Value="11"/>
-                                <Setter Property="Padding" Value="10,8"/>
-                                <Setter Property="BorderThickness" Value="0,0,0,1"/>
-                                <Setter Property="BorderBrush" Value="#E5EAF2"/>
-                            </Style>
+                            <StaticResource ResourceKey="CategoryColumnHeader"/>
                         </DataGrid.ColumnHeaderStyle>
+
+                        <DataGrid.CellStyle>
+                            <StaticResource ResourceKey="CategoryCellStyle"/>
+                        </DataGrid.CellStyle>
+
+                        <DataGrid.RowStyle>
+                            <StaticResource ResourceKey="CategoryRowStyle"/>
+                        </DataGrid.RowStyle>
 
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="ID"
@@ -187,6 +261,7 @@
                     </DataGrid>
                 </StackPanel>
             </Border>
+
         </StackPanel>
     </ScrollViewer>
 </UserControl>
