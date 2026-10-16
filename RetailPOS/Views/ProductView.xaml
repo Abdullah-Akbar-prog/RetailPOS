@@ -487,19 +487,52 @@
                             <Style TargetType="{x:Type DataGridCell}">
                                 <Setter Property="Padding" Value="8,4"/>
                                 <Setter Property="BorderThickness" Value="0"/>
-                                <Setter Property="VerticalContentAlignment" Value="Center"/>
                                 <Setter Property="Foreground" Value="#334155"/>
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="VerticalContentAlignment" Value="Center"/>
+                                <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+
+                                <Style.Triggers>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter Property="Background" Value="#E6F6F3"/>
+                                        <Setter Property="Foreground" Value="#115E59"/>
+                                        <Setter Property="BorderThickness" Value="0"/>
+                                    </Trigger>
+                                </Style.Triggers>
                             </Style>
                         </DataGrid.CellStyle>
 
                         <DataGrid.RowStyle>
                             <Style TargetType="{x:Type DataGridRow}">
                                 <Setter Property="Foreground" Value="#334155"/>
+                                <Setter Property="Background" Value="White"/>
+                                <Setter Property="BorderThickness" Value="0"/>
+                                <Setter Property="SnapsToDevicePixels" Value="True"/>
+
                                 <Style.Triggers>
+
+                                    <!-- Selected row -->
                                     <Trigger Property="IsSelected" Value="True">
-                                        <Setter Property="Background" Value="#CCFBF1"/>
-                                        <Setter Property="Foreground" Value="#134E4A"/>
+                                        <Setter Property="Background" Value="#E6F6F3"/>
+                                        <Setter Property="Foreground" Value="#115E59"/>
+                                        <Setter Property="BorderBrush" Value="#99F6E4"/>
+                                        <Setter Property="BorderThickness" Value="0,1,0,1"/>
                                     </Trigger>
+
+                                    <!-- Hover effect -->
+                                    <MultiTrigger>
+                                        <MultiTrigger.Conditions>
+                                            <Condition Property="IsMouseOver" Value="True"/>
+                                            <Condition Property="IsSelected" Value="False"/>
+                                        </MultiTrigger.Conditions>
+                                        <Setter Property="Background" Value="#F0FDFA"/>
+                                    </MultiTrigger>
+
+                                    <!-- Disabled row -->
+                                    <Trigger Property="IsEnabled" Value="False">
+                                        <Setter Property="Foreground" Value="#94A3B8"/>
+                                    </Trigger>
+
                                 </Style.Triggers>
                             </Style>
                         </DataGrid.RowStyle>
