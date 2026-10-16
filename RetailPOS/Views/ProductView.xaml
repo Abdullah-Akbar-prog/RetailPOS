@@ -21,18 +21,83 @@
             <Setter Property="Height" Value="38"/>
             <Setter Property="Padding" Value="10,7"/>
             <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Foreground" Value="#1E293B"/>
+            <Setter Property="CaretBrush" Value="#0D9488"/>
             <Setter Property="BorderBrush" Value="#CBD5E1"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Setter Property="Background" Value="#FFFFFF"/>
+            <Setter Property="Background" Value="White"/>
         </Style>
 
         <Style x:Key="ProductComboBox" TargetType="{x:Type ComboBox}">
             <Setter Property="Height" Value="38"/>
             <Setter Property="Padding" Value="8,5"/>
             <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Foreground" Value="#1E293B"/>
             <Setter Property="BorderBrush" Value="#CBD5E1"/>
+            <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Background" Value="White"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+        <!-- Visible checkbox with a custom teal tick -->
+        <Style x:Key="VisibleCheckBox" TargetType="{x:Type CheckBox}">
+            <Setter Property="Foreground" Value="#1E293B"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type CheckBox}">
+                        <StackPanel Orientation="Horizontal">
+                            <Border x:Name="CheckBorder"
+                                    Width="19"
+                                    Height="19"
+                                    Background="White"
+                                    BorderBrush="#94A3B8"
+                                    BorderThickness="1.5"
+                                    CornerRadius="4"
+                                    VerticalAlignment="Center">
+                                <TextBlock x:Name="CheckMark"
+                                           Text="✓"
+                                           FontSize="14"
+                                           FontWeight="Bold"
+                                           Foreground="White"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           Visibility="Collapsed"/>
+                            </Border>
+
+                            <ContentPresenter Margin="9,0,0,0"
+                                              VerticalAlignment="Center"/>
+                        </StackPanel>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="CheckBorder"
+                                        Property="Background"
+                                        Value="#0D9488"/>
+                                <Setter TargetName="CheckBorder"
+                                        Property="BorderBrush"
+                                        Value="#0D9488"/>
+                                <Setter TargetName="CheckMark"
+                                        Property="Visibility"
+                                        Value="Visible"/>
+                            </Trigger>
+
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="CheckBorder"
+                                        Property="BorderBrush"
+                                        Value="#0D9488"/>
+                            </Trigger>
+
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.5"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
 
         <Style x:Key="ActionButton" TargetType="{x:Type Button}">
@@ -58,6 +123,116 @@
             <Setter Property="FontSize" Value="12"/>
             <Setter Property="CanUserAddRows" Value="False"/>
             <Setter Property="IsReadOnly" Value="True"/>
+            <Setter Property="AutoGenerateColumns" Value="False"/>
+        </Style>
+
+        <!-- Placeholder displayed when no dropdown item is selected -->
+        <Style x:Key="PlaceholderComboBox" TargetType="{x:Type ComboBox}">
+            <Setter Property="Height" Value="38"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Foreground" Value="#64748B"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#CBD5E1"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="8,5"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ComboBox}">
+                        <Grid>
+                            <Border x:Name="ComboBorder"
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    CornerRadius="5"/>
+
+                            <Grid Margin="8,0,5,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <ContentPresenter x:Name="SelectionPresenter"
+                                                  Grid.Column="0"
+                                                  VerticalAlignment="Center"
+                                                  HorizontalAlignment="Left"
+                                                  Content="{TemplateBinding SelectionBoxItem}"
+                                                  ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                                  ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                                                  IsHitTestVisible="False"/>
+
+                                <TextBlock x:Name="PlaceholderText"
+                                           Grid.Column="0"
+                                           Text="{TemplateBinding Tag}"
+                                           Foreground="#94A3B8"
+                                           VerticalAlignment="Center"
+                                           IsHitTestVisible="False"
+                                           Visibility="Collapsed"/>
+
+                                <ToggleButton Grid.Column="1"
+                                              Focusable="False"
+                                              ClickMode="Press"
+                                              IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                              Background="Transparent"
+                                              BorderThickness="0">
+                                    <TextBlock Text="▼"
+                                               FontSize="10"
+                                               Foreground="#64748B"
+                                               VerticalAlignment="Center"
+                                               Margin="6,0"/>
+                                </ToggleButton>
+                            </Grid>
+
+                            <Popup x:Name="PART_Popup"
+                                   Placement="Bottom"
+                                   AllowsTransparency="True"
+                                   Focusable="False"
+                                   IsOpen="{TemplateBinding IsDropDownOpen}"
+                                   PopupAnimation="Slide">
+                                <Border Background="White"
+                                        BorderBrush="#CBD5E1"
+                                        BorderThickness="1"
+                                        CornerRadius="5"
+                                        MinWidth="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}"
+                                        MaxHeight="240">
+                                    <ScrollViewer>
+                                        <ItemsPresenter/>
+                                    </ScrollViewer>
+                                </Border>
+                            </Popup>
+                        </Grid>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="HasItems" Value="False">
+                                <Setter TargetName="PlaceholderText"
+                                        Property="Visibility"
+                                        Value="Visible"/>
+                            </Trigger>
+
+                            <Trigger Property="SelectedIndex" Value="-1">
+                                <Setter TargetName="PlaceholderText"
+                                        Property="Visibility"
+                                        Value="Visible"/>
+                                <Setter TargetName="SelectionPresenter"
+                                        Property="Visibility"
+                                        Value="Collapsed"/>
+                            </Trigger>
+
+                            <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                                <Setter TargetName="ComboBorder"
+                                        Property="BorderBrush"
+                                        Value="#0D9488"/>
+                            </Trigger>
+
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="ComboBorder"
+                                        Property="BorderBrush"
+                                        Value="#0D9488"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
 
     </UserControl.Resources>
@@ -107,19 +282,17 @@
                     BorderThickness="1">
 
                 <StackPanel>
-                    <Grid Margin="0,0,0,20">
-                        <StackPanel>
-                            <TextBlock Text="Product Details"
-                                       FontSize="17"
-                                       FontWeight="SemiBold"
-                                       Foreground="#1E293B"/>
+                    <StackPanel Margin="0,0,0,20">
+                        <TextBlock Text="Product Details"
+                                   FontSize="17"
+                                   FontWeight="SemiBold"
+                                   Foreground="#1E293B"/>
 
-                            <TextBlock Text="Enter the product information below."
-                                       FontSize="12"
-                                       Foreground="#94A3B8"
-                                       Margin="0,5,0,0"/>
-                        </StackPanel>
-                    </Grid>
+                        <TextBlock Text="Enter the product information below."
+                                   FontSize="12"
+                                   Foreground="#94A3B8"
+                                   Margin="0,5,0,0"/>
+                    </StackPanel>
 
                     <!-- Form Fields -->
                     <Grid>
@@ -136,102 +309,91 @@
                         </Grid.RowDefinitions>
 
                         <!-- Product Name -->
-                        <StackPanel Grid.Row="0"
-                                    Grid.Column="0"
+                        <StackPanel Grid.Row="0" Grid.Column="0"
                                     Margin="0,0,12,16">
                             <TextBlock Text="Product Name *"
                                        Style="{StaticResource FieldLabel}"/>
-
                             <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
                                      Style="{StaticResource ProductTextBox}"
                                      ToolTip="Enter product name"/>
                         </StackPanel>
 
                         <!-- SKU -->
-                        <StackPanel Grid.Row="0"
-                                    Grid.Column="1"
+                        <StackPanel Grid.Row="0" Grid.Column="1"
                                     Margin="12,0,0,16">
                             <TextBlock Text="SKU"
                                        Style="{StaticResource FieldLabel}"/>
-
                             <TextBox Text="{Binding Sku, UpdateSourceTrigger=PropertyChanged}"
                                      Style="{StaticResource ProductTextBox}"
                                      ToolTip="Enter stock keeping unit"/>
                         </StackPanel>
 
                         <!-- Cost Price -->
-                        <StackPanel Grid.Row="1"
-                                    Grid.Column="0"
+                        <StackPanel Grid.Row="1" Grid.Column="0"
                                     Margin="0,0,12,16">
                             <TextBlock Text="Cost Price"
                                        Style="{StaticResource FieldLabel}"/>
-
                             <TextBox Text="{Binding CostPrice, UpdateSourceTrigger=PropertyChanged}"
                                      Style="{StaticResource ProductTextBox}"/>
                         </StackPanel>
 
                         <!-- Selling Price -->
-                        <StackPanel Grid.Row="1"
-                                    Grid.Column="1"
+                        <StackPanel Grid.Row="1" Grid.Column="1"
                                     Margin="12,0,0,16">
                             <TextBlock Text="Selling Price"
                                        Style="{StaticResource FieldLabel}"/>
-
                             <TextBox Text="{Binding SellingPrice, UpdateSourceTrigger=PropertyChanged}"
                                      Style="{StaticResource ProductTextBox}"/>
                         </StackPanel>
 
-                        <!-- Stock -->
-                        <StackPanel Grid.Row="2"
-                                    Grid.Column="0"
+                        <!-- Stock Quantity -->
+                        <StackPanel Grid.Row="2" Grid.Column="0"
                                     Margin="0,0,12,16">
                             <TextBlock Text="Stock Quantity"
                                        Style="{StaticResource FieldLabel}"/>
-
                             <TextBox Text="{Binding StockQuantity, UpdateSourceTrigger=PropertyChanged}"
-                                     Style="{StaticResource ProductTextBox}"/>
+                                     Style="{StaticResource ProductTextBox}"
+                                     ToolTip="Enter the available stock quantity"/>
                         </StackPanel>
 
-                        <!-- Reorder -->
-                        <StackPanel Grid.Row="2"
-                                    Grid.Column="1"
+                        <!-- Reorder Level -->
+                        <StackPanel Grid.Row="2" Grid.Column="1"
                                     Margin="12,0,0,16">
                             <TextBlock Text="Reorder Level"
                                        Style="{StaticResource FieldLabel}"/>
-
                             <TextBox Text="{Binding ReorderLevel, UpdateSourceTrigger=PropertyChanged}"
                                      Style="{StaticResource ProductTextBox}"/>
                         </StackPanel>
 
                         <!-- Brand -->
-                        <StackPanel Grid.Row="3"
-                                    Grid.Column="0"
+                        <StackPanel Grid.Row="3" Grid.Column="0"
                                     Margin="0,0,12,16">
                             <TextBlock Text="Brand *"
                                        Style="{StaticResource FieldLabel}"/>
-
-                            <ComboBox ItemsSource="{Binding Brands}"
-                                      SelectedItem="{Binding SelectedBrand}"
+                            <ComboBox Style="{StaticResource PlaceholderComboBox}"
+                                      ItemsSource="{Binding Brands}"
+                                      SelectedItem="{Binding SelectedBrand, Mode=TwoWay}"
                                       DisplayMemberPath="BrandName"
-                                      Style="{StaticResource ProductComboBox}"
-                                      ToolTip="Select a brand"
-                                      IsEditable="True"
-                                      IsReadOnly="True"
-                                      Text="Select the Brand"
-                                      IsTextSearchEnabled="False" />
+                                      SelectedValuePath="BrandId"
+                                      Tag="Select the brand"
+                                      IsEditable="False"
+                                      IsTextSearchEnabled="True"
+                                      ToolTip="Select a brand"/>
                         </StackPanel>
 
                         <!-- Category -->
-                        <StackPanel Grid.Row="3"
-                                    Grid.Column="1"
+                        <StackPanel Grid.Row="3" Grid.Column="1"
                                     Margin="12,0,0,16">
                             <TextBlock Text="Category *"
                                        Style="{StaticResource FieldLabel}"/>
-
-                            <ComboBox ItemsSource="{Binding Categories}"
-                                      SelectedItem="{Binding SelectedCategory}"
+                            <ComboBox Style="{StaticResource PlaceholderComboBox}"
+                                      ItemsSource="{Binding Categories}"
+                                      SelectedItem="{Binding SelectedCategory, Mode=TwoWay}"
                                       DisplayMemberPath="CategoryName"
-                                      Style="{StaticResource ProductComboBox}"
+                                      SelectedValuePath="CategoryId"
+                                      Tag="Select the category"
+                                      IsEditable="False"
+                                      IsTextSearchEnabled="True"
                                       ToolTip="Select a category"/>
                         </StackPanel>
                     </Grid>
@@ -241,11 +403,10 @@
                             CornerRadius="8"
                             Padding="12"
                             Margin="0,0,0,18">
-                        <CheckBox Content="Product is active and available for sale"
-                                  IsChecked="{Binding IsActive}"
-                                  Foreground="#334155"
-                                  FontSize="12"
-                                  VerticalAlignment="Center"/>
+                        <CheckBox Content="Active"
+                                  Style="{StaticResource VisibleCheckBox}"
+                                  IsChecked="{Binding IsActive, Mode=TwoWay}"
+                                  ToolTip="Enable or disable this product"/>
                     </Border>
 
                     <!-- Action Buttons -->
@@ -285,22 +446,20 @@
                     BorderThickness="1">
 
                 <StackPanel>
-                    <Grid Margin="0,0,0,18">
-                        <StackPanel>
-                            <TextBlock Text="Product Inventory"
-                                       FontSize="17"
-                                       FontWeight="SemiBold"
-                                       Foreground="#1E293B"/>
+                    <StackPanel Margin="0,0,0,18">
+                        <TextBlock Text="Product Inventory"
+                                   FontSize="17"
+                                   FontWeight="SemiBold"
+                                   Foreground="#1E293B"/>
 
-                            <TextBlock Text="Select a product to edit or delete it."
-                                       FontSize="12"
-                                       Foreground="#94A3B8"
-                                       Margin="0,5,0,0"/>
-                        </StackPanel>
-                    </Grid>
+                        <TextBlock Text="Select a product to edit or delete it."
+                                   FontSize="12"
+                                   Foreground="#94A3B8"
+                                   Margin="0,5,0,0"/>
+                    </StackPanel>
 
                     <DataGrid ItemsSource="{Binding Products}"
-                              SelectedItem="{Binding SelectedProduct}"
+                              SelectedItem="{Binding SelectedProduct, Mode=TwoWay}"
                               AutoGenerateColumns="False"
                               Style="{StaticResource InventoryGrid}"
                               MinHeight="280"
@@ -329,8 +488,21 @@
                                 <Setter Property="Padding" Value="8,4"/>
                                 <Setter Property="BorderThickness" Value="0"/>
                                 <Setter Property="VerticalContentAlignment" Value="Center"/>
+                                <Setter Property="Foreground" Value="#334155"/>
                             </Style>
                         </DataGrid.CellStyle>
+
+                        <DataGrid.RowStyle>
+                            <Style TargetType="{x:Type DataGridRow}">
+                                <Setter Property="Foreground" Value="#334155"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter Property="Background" Value="#CCFBF1"/>
+                                        <Setter Property="Foreground" Value="#134E4A"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DataGrid.RowStyle>
 
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="ID"
@@ -373,7 +545,6 @@
                     </DataGrid>
                 </StackPanel>
             </Border>
-
         </StackPanel>
     </ScrollViewer>
 </UserControl>
