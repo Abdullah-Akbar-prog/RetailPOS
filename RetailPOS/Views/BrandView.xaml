@@ -1,103 +1,267 @@
 ﻿<UserControl x:Class="RetailPOS.Views.BrandView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="#F5F7FB"
+             FontFamily="Segoe UI">
 
-    <Grid Background="#F4F6FA" Margin="25">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+    <UserControl.Resources>
 
-        <!-- Page Heading -->
-        <StackPanel Grid.Row="0" Margin="0,0,0,20">
-            <TextBlock Text="Brand Management"
-                       FontSize="26"
-                       FontWeight="Bold"
-                       Foreground="#202938"/>
+        <SolidColorBrush x:Key="AccentBrush" Color="#0D9488"/>
+        <SolidColorBrush x:Key="MutedBrush" Color="#64748B"/>
+        <SolidColorBrush x:Key="CardBorderBrush" Color="#E5EAF2"/>
 
-            <TextBlock Text="Create and manage product brands"
-                       FontSize="13"
-                       Foreground="#7A8497"
-                       Margin="0,5,0,0"/>
+        <!-- TextBox Style -->
+        <Style x:Key="BrandTextBox" TargetType="{x:Type TextBox}">
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Padding" Value="10,7"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Foreground" Value="#1E293B"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#CBD5E1"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="CaretBrush" Value="#0D9488"/>
+        </Style>
+
+        <!-- Button Style -->
+        <Style x:Key="BrandButton" TargetType="{x:Type Button}">
+            <Setter Property="Padding" Value="16,10"/>
+            <Setter Property="Margin" Value="0,0,8,0"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+
+        <!-- DataGrid Style -->
+        <Style x:Key="BrandGrid" TargetType="{x:Type DataGrid}">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="#334155"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="RowBackground" Value="White"/>
+            <Setter Property="AlternatingRowBackground" Value="#F8FAFC"/>
+            <Setter Property="GridLinesVisibility" Value="Horizontal"/>
+            <Setter Property="HorizontalGridLinesBrush" Value="#EDF1F5"/>
+            <Setter Property="VerticalGridLinesBrush" Value="#EDF1F5"/>
+            <Setter Property="RowHeight" Value="44"/>
+            <Setter Property="ColumnHeaderHeight" Value="42"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="CanUserAddRows" Value="False"/>
+            <Setter Property="IsReadOnly" Value="True"/>
+            <Setter Property="AutoGenerateColumns" Value="False"/>
+            <Setter Property="SelectionMode" Value="Single"/>
+            <Setter Property="SelectionUnit" Value="FullRow"/>
+            <Setter Property="CanUserResizeRows" Value="False"/>
+            <Setter Property="CanUserSortColumns" Value="True"/>
+        </Style>
+
+        <!-- Table Header -->
+        <Style x:Key="BrandColumnHeader"
+               TargetType="{x:Type DataGridColumnHeader}">
+            <Setter Property="Background" Value="#F8FAFC"/>
+            <Setter Property="Foreground" Value="#475569"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="Padding" Value="10,8"/>
+            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+            <Setter Property="BorderBrush" Value="#E5EAF2"/>
+        </Style>
+
+        <!-- Table Cell: Teal selection instead of blue -->
+        <Style x:Key="BrandCellStyle"
+               TargetType="{x:Type DataGridCell}">
+            <Setter Property="Padding" Value="8,4"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Foreground" Value="#334155"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="#E6F6F3"/>
+                    <Setter Property="Foreground" Value="#115E59"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Table Row: Matching Product Inventory -->
+        <Style x:Key="BrandRowStyle"
+               TargetType="{x:Type DataGridRow}">
+            <Setter Property="Foreground" Value="#334155"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="#E6F6F3"/>
+                    <Setter Property="Foreground" Value="#115E59"/>
+                    <Setter Property="BorderBrush" Value="#99F6E4"/>
+                    <Setter Property="BorderThickness" Value="0,1,0,1"/>
+                </Trigger>
+
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="IsMouseOver" Value="True"/>
+                        <Condition Property="IsSelected" Value="False"/>
+                    </MultiTrigger.Conditions>
+                    <Setter Property="Background" Value="#F0FDFA"/>
+                </MultiTrigger>
+
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Foreground" Value="#94A3B8"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+    </UserControl.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto"
+                  HorizontalScrollBarVisibility="Disabled">
+
+        <StackPanel Margin="26">
+
+            <!-- Page Header -->
+            <Grid Margin="0,0,0,24">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel>
+                    <TextBlock Text="Brand Management"
+                               FontSize="26"
+                               FontWeight="Bold"
+                               Foreground="#1E293B"/>
+
+                    <TextBlock Text="Create and manage product brands."
+                               FontSize="13"
+                               Foreground="#64748B"
+                               Margin="0,7,0,0"/>
+                </StackPanel>
+
+                <Border Grid.Column="1"
+                        Background="#E6F6F3"
+                        CornerRadius="9"
+                        Padding="12,8"
+                        VerticalAlignment="Center">
+                    <TextBlock Text="Brands"
+                               FontSize="12"
+                               FontWeight="SemiBold"
+                               Foreground="#0F766E"/>
+                </Border>
+            </Grid>
+
+            <!-- Brand Form Card -->
+            <Border Background="White"
+                    CornerRadius="14"
+                    Padding="22"
+                    Margin="0,0,0,22"
+                    BorderBrush="#E5EAF2"
+                    BorderThickness="1">
+
+                <StackPanel>
+                    <TextBlock Text="Brand Details"
+                               FontSize="17"
+                               FontWeight="SemiBold"
+                               Foreground="#1E293B"/>
+
+                    <TextBlock Text="Enter the brand information below."
+                               FontSize="12"
+                               Foreground="#94A3B8"
+                               Margin="0,5,0,20"/>
+
+                    <TextBlock Text="Brand Name *"
+                               FontSize="12"
+                               FontWeight="SemiBold"
+                               Foreground="#475569"
+                               Margin="0,0,0,7"/>
+
+                    <TextBox Style="{StaticResource BrandTextBox}"
+                             Text="{Binding BrandName, UpdateSourceTrigger=PropertyChanged}"
+                             ToolTip="Enter brand name"
+                             Margin="0,0,0,18"/>
+
+                    <!-- Action Buttons -->
+                    <WrapPanel>
+                        <Button Content="Save Brand"
+                                Command="{Binding SaveCommand}"
+                                Style="{StaticResource BrandButton}"
+                                Background="#0D9488"
+                                Foreground="White"/>
+
+                        <Button Content="Edit Selected"
+                                Command="{Binding EditCommand}"
+                                Style="{StaticResource BrandButton}"
+                                Background="#E8F0FE"
+                                Foreground="#2563EB"/>
+
+                        <Button Content="Delete Selected"
+                                Command="{Binding DeleteCommand}"
+                                Style="{StaticResource BrandButton}"
+                                Background="#FEF2F2"
+                                Foreground="#DC2626"/>
+
+                        <Button Content="Clear Form"
+                                Command="{Binding ClearCommand}"
+                                Style="{StaticResource BrandButton}"
+                                Background="#F1F5F9"
+                                Foreground="#475569"/>
+                    </WrapPanel>
+                </StackPanel>
+            </Border>
+
+            <!-- Brand Inventory Card -->
+            <Border Background="White"
+                    CornerRadius="14"
+                    Padding="20"
+                    BorderBrush="#E5EAF2"
+                    BorderThickness="1">
+
+                <StackPanel>
+                    <TextBlock Text="Brand Inventory"
+                               FontSize="17"
+                               FontWeight="SemiBold"
+                               Foreground="#1E293B"/>
+
+                    <TextBlock Text="Select a brand to edit or delete it."
+                               FontSize="12"
+                               Foreground="#94A3B8"
+                               Margin="0,5,0,18"/>
+
+                    <DataGrid ItemsSource="{Binding Brands}"
+                              SelectedItem="{Binding SelectedBrand, Mode=TwoWay}"
+                              Style="{StaticResource BrandGrid}"
+                              MinHeight="220"
+                              MaxHeight="400">
+
+                        <DataGrid.ColumnHeaderStyle>
+                            <StaticResource ResourceKey="BrandColumnHeader"/>
+                        </DataGrid.ColumnHeaderStyle>
+
+                        <DataGrid.CellStyle>
+                            <StaticResource ResourceKey="BrandCellStyle"/>
+                        </DataGrid.CellStyle>
+
+                        <DataGrid.RowStyle>
+                            <StaticResource ResourceKey="BrandRowStyle"/>
+                        </DataGrid.RowStyle>
+
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ID"
+                                                Binding="{Binding BrandId}"
+                                                Width="100"/>
+
+                            <DataGridTextColumn Header="BRAND NAME"
+                                                Binding="{Binding BrandName}"
+                                                Width="*"
+                                                MinWidth="180"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+            </Border>
+
         </StackPanel>
-
-        <!-- Brand Form -->
-        <Border Grid.Row="1"
-                Background="White"
-                CornerRadius="10"
-                Padding="20"
-                Margin="0,0,0,20">
-
-            <StackPanel>
-                <TextBlock Text="Brand Details"
-                           FontSize="17"
-                           FontWeight="SemiBold"
-                           Margin="0,0,0,15"/>
-
-                <TextBlock Text="Brand Name"
-                           Margin="0,0,0,6"
-                           Foreground="#465166"/>
-
-                <TextBox Text="{Binding BrandName, UpdateSourceTrigger=PropertyChanged}"
-                         Height="38"
-                         Padding="10,7"
-                         FontSize="14"
-                         BorderBrush="#D8DEEA"
-                         Margin="0,0,0,18"/>
-
-                <WrapPanel>
-                    <Button Content="Save Brand"
-                            Command="{Binding SaveCommand}"
-                            Background="#2563EB"
-                            Foreground="White"
-                            Padding="20,10"
-                            Margin="0,0,10,0"
-                            BorderThickness="0"/>
-
-                    <Button Content="Edit Selected"
-                            Command="{Binding EditCommand}"
-                            Padding="20,10"
-                            Margin="0,0,10,0"/>
-
-                    <Button Content="Delete Selected"
-                            Command="{Binding DeleteCommand}"
-                            Padding="20,10"
-                            Margin="0,0,10,0"/>
-
-                    <Button Content="Clear"
-                            Command="{Binding ClearCommand}"
-                            Padding="20,10"/>
-                </WrapPanel>
-            </StackPanel>
-        </Border>
-
-        <!-- Brands Table -->
-        <Border Grid.Row="2"
-                Background="White"
-                CornerRadius="10"
-                Padding="15">
-
-            <DataGrid ItemsSource="{Binding Brands}"
-                      SelectedItem="{Binding SelectedBrand, Mode=TwoWay}"
-                      AutoGenerateColumns="False"
-                      CanUserAddRows="False"
-                      IsReadOnly="True"
-                      HeadersVisibility="Column"
-                      GridLinesVisibility="Horizontal"
-                      BorderThickness="0"
-                      RowHeight="40">
-
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="ID"
-                                        Binding="{Binding BrandId}"
-                                        Width="100"/>
-
-                    <DataGridTextColumn Header="Brand Name"
-                                        Binding="{Binding BrandName}"
-                                        Width="*"/>
-                </DataGrid.Columns>
-            </DataGrid>
-        </Border>
-    </Grid>
+    </ScrollViewer>
 </UserControl>
