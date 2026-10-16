@@ -46,12 +46,16 @@ namespace RetailPOS
                     services.AddTransient<CategoryViewModel>();
                     services.AddTransient<BrandViewModel>();
                     services.AddTransient<SaleViewModel>();
+                    services.AddTransient<DashboardViewModel>();
+                    services.AddTransient<SaleHistoryViewModel>();
 
                     // Views
                     services.AddTransient<ProductView>();
                     services.AddTransient<BrandView>();
                     services.AddTransient<CategoryView>();
                     services.AddTransient<SaleView>();
+                    services.AddTransient<DashboardView>();
+                    services.AddTransient<SaleHistoryView>();
 
                     // Main Window
                     services.AddTransient<MainWindow>();

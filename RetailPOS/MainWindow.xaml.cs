@@ -54,13 +54,14 @@ public partial class MainWindow : Window
 
             case "SaleHistory":
                 PageTitle.Text = "Sale History";
-                MainContent.Content = CreatePlaceholder("Sale History");
+                MainContent.Content =
+     _serviceProvider.GetRequiredService<SaleHistoryView>();
                 break;
 
             default:
                 PageTitle.Text = "Dashboard";
-                MainContent.Content = CreatePlaceholder(
-                    "Welcome to RetailPOS");
+                MainContent.Content =
+     _serviceProvider.GetRequiredService<DashboardView>();
                 break;
         }
     }

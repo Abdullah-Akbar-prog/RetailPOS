@@ -1,28 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using RetailPOS.ViewModels;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
-namespace RetailPOS.Views
+namespace RetailPOS.Views;
+
+public partial class DashboardView : UserControl
 {
-    /// <summary>
-    /// Interaction logic for DashboardView.xaml
-    /// </summary>
-    public partial class DashboardView : Page
+    private readonly DashboardViewModel _viewModel;
+
+    public DashboardView(DashboardViewModel viewModel)
     {
-        public DashboardView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
+
+        _viewModel = viewModel;
+        DataContext = _viewModel;
+
+        Loaded += DashboardView_Loaded;
+    }
+
+    private async void DashboardView_Loaded(
+        object sender, RoutedEventArgs e)
+    {
+        Loaded -= DashboardView_Loaded;
+        await _viewModel.LoadAsync();
     }
 }

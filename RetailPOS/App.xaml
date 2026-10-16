@@ -4,6 +4,71 @@
              xmlns:local="clr-namespace:RetailPOS">
 
     <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
 
+                <!-- Material Design 3 Theme -->
+                <ResourceDictionary
+                    Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign3.Defaults.xaml" />
+
+            </ResourceDictionary.MergedDictionaries>
+
+            <!-- Application Colors -->
+            <Color x:Key="PrimaryColor">#2563EB</Color>
+            <Color x:Key="SidebarColor">#0F172A</Color>
+            <Color x:Key="BackgroundColor">#F1F5F9</Color>
+            <Color x:Key="CardColor">#FFFFFF</Color>
+            <Color x:Key="TextColor">#1E293B</Color>
+
+            <!-- Brushes -->
+            <SolidColorBrush x:Key="PrimaryBrush"
+                             Color="{StaticResource PrimaryColor}"/>
+
+            <SolidColorBrush x:Key="SidebarBrush"
+                             Color="{StaticResource SidebarColor}"/>
+
+            <SolidColorBrush x:Key="PageBackgroundBrush"
+                             Color="{StaticResource BackgroundColor}"/>
+
+            <SolidColorBrush x:Key="CardBrush"
+                             Color="{StaticResource CardColor}"/>
+
+            <SolidColorBrush x:Key="PrimaryTextBrush"
+                             Color="{StaticResource TextColor}"/>
+
+            <!-- Navigation Buttons -->
+            <Style x:Key="NavButton" TargetType="{x:Type Button}">
+                <Setter Property="Foreground" Value="#CBD5E1"/>
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="Padding" Value="16,12"/>
+                <Setter Property="Margin" Value="8,4"/>
+                <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="FontWeight" Value="Medium"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="Cursor" Value="Hand"/>
+            </Style>
+
+            <!-- Primary Buttons -->
+            <Style x:Key="PrimaryButton" TargetType="{x:Type Button}">
+                <Setter Property="Background" Value="{StaticResource PrimaryBrush}"/>
+                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="Padding" Value="18,10"/>
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="FontWeight" Value="SemiBold"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="Cursor" Value="Hand"/>
+                <Setter Property="Margin" Value="4"/>
+            </Style>
+
+            <!-- Page Headings -->
+            <Style x:Key="PageHeading" TargetType="{x:Type TextBlock}">
+                <Setter Property="FontSize" Value="26"/>
+                <Setter Property="FontWeight" Value="Bold"/>
+                <Setter Property="Foreground" Value="{StaticResource PrimaryTextBrush}"/>
+                <Setter Property="Margin" Value="0,0,0,16"/>
+            </Style>
+
+        </ResourceDictionary>
     </Application.Resources>
 </Application>
