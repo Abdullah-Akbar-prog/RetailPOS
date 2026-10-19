@@ -1,84 +1,106 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
+﻿
+using CommunityToolkit.Mvvm.ComponentModel;
 using RetailPOS.Models;
 using RetailPOS.Services;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Windows.Data;
 
 namespace RetailPOS.ViewModels;
 
 public partial class BrandViewModel : ObservableObject
 {
     private readonly BrandService _service;
+    private readonly ICollectionView _brandsView;
 
     public ObservableCollection<Brand> Brands { get; } = new();
+
+    public ICollectionView BrandsView => _brandsView;
 
     [ObservableProperty]
     private Brand? selectedBrand;
 
     [ObservableProperty]
-    private string brandName = string.Empty;
+    private string searchText = string.Empty;
 
     public BrandViewModel(BrandService service)
     {
         _service = service;
+
+        _brandsView = CollectionViewSource.GetDefaultView(Brands);
+        _brandsView.Filter = FilterBrand;
     }
 
-    [RelayCommand]
+    private bool FilterBrand(object item)
+    {
+        if (item is not Brand brand)
+            return false;
+
+        return string.IsNullOrWhiteSpace(SearchText)
+            || (brand.BrandName?.Contains(
+                SearchText.Trim(),
+                StringComparison.OrdinalIgnoreCase) ?? false);
+    }
+
+    partial void OnSearchTextChanged(string value)
+    {
+        _brandsView.Refresh();
+    }
+
     public async Task LoadAsync()
     {
         var brands = await _service.GetAllAsync();
 
         Brands.Clear();
+
         foreach (var brand in brands)
             Brands.Add(brand);
+
+        _brandsView.Refresh();
     }
 
-    [RelayCommand]
-    private async Task SaveAsync()
+    public async Task AddBrandAsync(string brandName)
     {
-        if (string.IsNullOrWhiteSpace(BrandName))
+        brandName = brandName.Trim();
+
+        if (brandName.Length == 0)
             return;
 
-        if (SelectedBrand is null)
+        await _service.AddAsync(new Brand
         {
-            await _service.AddAsync(new Brand
-            {
-                BrandName = BrandName.Trim()
-            });
-        }
-        else
-        {
-            SelectedBrand.BrandName = BrandName.Trim();
-            await _service.UpdateAsync(SelectedBrand);
-        }
+            BrandName = brandName
+        });
 
-        Clear();
         await LoadAsync();
     }
 
-    [RelayCommand]
-    private void Edit()
+    public async Task UpdateBrandAsync(
+        Brand selectedBrand,
+        string brandName)
     {
-        if (SelectedBrand is not null)
-            BrandName = SelectedBrand.BrandName;
-    }
+        brandName = brandName.Trim();
 
-    [RelayCommand]
-    private async Task DeleteAsync()
-    {
-        if (SelectedBrand is null)
+        if (brandName.Length == 0)
             return;
 
-        await _service.DeleteAsync(SelectedBrand.BrandId);
+        // Load a fresh entity so EF Core updates the current database row.
+        var updatedBrand = new Brand
+        {
+            BrandId = selectedBrand.BrandId,
+            BrandName = brandName
+        };
 
-        Clear();
+        await _service.UpdateAsync(updatedBrand);
+
         await LoadAsync();
     }
 
-    [RelayCommand]
-    private void Clear()
+    public async Task DeleteBrandAsync(Brand selectedBrand)
     {
+        await _service.DeleteAsync(selectedBrand.BrandId);
+
         SelectedBrand = null;
-        BrandName = string.Empty;
+
+        await LoadAsync();
     }
 }
