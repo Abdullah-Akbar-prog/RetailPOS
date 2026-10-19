@@ -1,0 +1,80 @@
+﻿<Window x:Class="RetailPOS.Views.BrandDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Brand"
+        Width="440"
+        SizeToContent="Height"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        Background="#F5F7FB"
+        FontFamily="Segoe UI"
+        ShowInTaskbar="False">
+
+    <Border Background="White"
+            CornerRadius="14"
+            Padding="26"
+            Margin="12"
+            BorderBrush="#E5EAF2"
+            BorderThickness="1">
+
+        <StackPanel>
+            <TextBlock x:Name="DialogTitle"
+                       Text="Add Brand"
+                       FontSize="22"
+                       FontWeight="Bold"
+                       Foreground="#1E293B"/>
+
+            <TextBlock Text="Enter the brand information below."
+                       Margin="0,7,0,24"
+                       Foreground="#64748B"
+                       FontSize="13"/>
+
+            <TextBlock Text="Brand Name *"
+                       FontWeight="SemiBold"
+                       FontSize="12"
+                       Foreground="#475569"
+                       Margin="0,0,0,8"/>
+
+            <TextBox x:Name="BrandNameTextBox"
+                     Height="42"
+                     Padding="10"
+                     FontSize="14"
+                     VerticalContentAlignment="Center"
+                     BorderBrush="#CBD5E1"
+                     CaretBrush="#0D9488"
+                     ToolTip="Enter brand name"/>
+
+            <TextBlock x:Name="ValidationMessage"
+                       Foreground="#DC2626"
+                       FontSize="12"
+                       Margin="0,7,0,0"
+                       TextWrapping="Wrap"/>
+
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Right"
+                        Margin="0,26,0,0">
+
+                <Button Content="Cancel"
+                        Width="95"
+                        Height="38"
+                        Margin="0,0,10,0"
+                        Background="#F1F5F9"
+                        Foreground="#475569"
+                        BorderThickness="0"
+                        Cursor="Hand"
+                        IsCancel="True"/>
+
+                <Button Content="Save Brand"
+                        Width="110"
+                        Height="38"
+                        Background="#0D9488"
+                        Foreground="White"
+                        BorderThickness="0"
+                        FontWeight="SemiBold"
+                        Cursor="Hand"
+                        IsDefault="True"
+                        Click="SaveButton_Click"/>
+            </StackPanel>
+        </StackPanel>
+    </Border>
+</Window>
