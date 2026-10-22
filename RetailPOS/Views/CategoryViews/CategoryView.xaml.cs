@@ -8,16 +8,16 @@ namespace RetailPOS.Views;
 
 public partial class CategoryView : UserControl
 {
-    private CategoryViewModel _viewModels;
+    private CategoryViewModel _viewModel;
 
-    public CategoryView(CategoryViewModel _viewModel)
+    public CategoryView(CategoryViewModel viewModel)
     {
         InitializeComponent();
 
-        _viewModels = _viewModel;
-        DataContext = _viewModel;
+        _viewModel = viewModel;
+        DataContext = viewModel;
 
-        Loaded += async (_, _) => await _viewModel.LoadAsync();
+        Loaded += async (_, _) => await viewModel.LoadAsync();
     }
 
     private async void CategoryView_Loaded(
@@ -25,7 +25,7 @@ public partial class CategoryView : UserControl
     {
         Loaded -= CategoryView_Loaded;
 
-        if (_viewModels is null)
+        if (_viewModel is null)
         {
             MessageBox.Show(
                 "CategoryViewModel is not assigned to this view.",
@@ -37,7 +37,7 @@ public partial class CategoryView : UserControl
 
         try
         {
-            await _viewModels.LoadAsync();
+            await _viewModel.LoadAsync();
         }
         catch (Exception ex)
         {
@@ -58,7 +58,7 @@ public partial class CategoryView : UserControl
     private async void AddButton_Click(
         object sender, RoutedEventArgs e)
     {
-        if (_viewModels is null)
+        if (_viewModel is null)
             return;
 
         var dialog = new CategoryDialog("Add Category")
