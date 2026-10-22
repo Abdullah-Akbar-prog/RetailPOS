@@ -58,7 +58,7 @@
 
             <Button Grid.Column="1"
                     Content="+ Add New"
-                    Padding="20,12"
+                    Padding="21,6"
                     VerticalAlignment="Center"
                     Background="#0D9488"
                     Foreground="White"
@@ -123,26 +123,36 @@
                 </StackPanel>
 
                 <DataGrid x:Name="BrandsDataGrid"
-                          ItemsSource="{Binding BrandsView}"
-                          SelectedItem="{Binding SelectedBrand, Mode=TwoWay}"
-                          AutoGenerateColumns="False"
-                          IsReadOnly="True"
-                          CanUserAddRows="False"
-                          SelectionMode="Single"
-                          SelectionUnit="FullRow"
-                          RowHeight="48"
-                          ColumnHeaderHeight="42"
-                          GridLinesVisibility="Horizontal"
-                          HorizontalGridLinesBrush="#EDF1F5"
-                          BorderThickness="0"
-                          Background="White"
-                          Foreground="#334155"
-                          FontSize="13">
+          ItemsSource="{Binding BrandsView}"
+          SelectedItem="{Binding SelectedBrand, Mode=TwoWay}"
+          LoadingRow="BrandsDataGrid_LoadingRow"
+          AutoGenerateColumns="False"
+          IsReadOnly="True"
+          CanUserAddRows="False"
+          SelectionMode="Single"
+          SelectionUnit="FullRow"
+          RowHeight="48"
+          ColumnHeaderHeight="42"
+          GridLinesVisibility="Horizontal"
+          HorizontalGridLinesBrush="#EDF1F5"
+          BorderThickness="0"
+          Background="White"
+          Foreground="#334155"
+          FontSize="13">
 
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="ID"
-                                            Binding="{Binding BrandId}"
-                                            Width="90"/>
+                        <DataGridTemplateColumn Header="SR#" Width="70">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock
+                Text="{Binding RelativeSource={RelativeSource
+                    AncestorType={x:Type DataGridRow}},
+                    Path=AlternationIndex}"
+                VerticalAlignment="Center"
+                Margin="8,0"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
 
                         <DataGridTextColumn Header="BRAND NAME"
                                             Binding="{Binding BrandName}"
