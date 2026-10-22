@@ -71,7 +71,7 @@ public partial class CategoryView : UserControl
 
         try
         {
-            await _viewModels.AddCategoryAsync(
+            await _viewModel.AddCategoryAsync(
                 dialog.EnteredCategoryName);
         }
         catch (Exception ex)
@@ -87,7 +87,7 @@ public partial class CategoryView : UserControl
     private async void EditButton_Click(
         object sender, RoutedEventArgs e)
     {
-        if (_viewModels is null ||
+        if (_viewModel is null ||
             (sender as FrameworkElement)?.Tag is not Category category)
             return;
 
@@ -103,7 +103,7 @@ public partial class CategoryView : UserControl
 
         try
         {
-            await _viewModels.UpdateCategoryAsync(
+            await _viewModel.UpdateCategoryAsync(
                 category, dialog.EnteredCategoryName);
         }
         catch (Exception ex)
@@ -119,7 +119,7 @@ public partial class CategoryView : UserControl
     private async void DeleteButton_Click(
         object sender, RoutedEventArgs e)
     {
-        if (_viewModels is null ||
+        if (_viewModel is null ||
             (sender as FrameworkElement)?.Tag is not Category category)
             return;
 
@@ -135,7 +135,7 @@ public partial class CategoryView : UserControl
 
         try
         {
-            await _viewModels.DeleteCategoryAsync(category);
+            await _viewModel.DeleteCategoryAsync(category);
         }
         catch (Exception ex)
         {
