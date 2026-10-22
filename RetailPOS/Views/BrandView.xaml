@@ -144,12 +144,10 @@
                         <DataGridTemplateColumn Header="SR#" Width="70">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock
-                Text="{Binding RelativeSource={RelativeSource
-                    AncestorType={x:Type DataGridRow}},
-                    Path=AlternationIndex}"
-                VerticalAlignment="Center"
-                Margin="8,0"/>
+                                    <TextBlock Text="{Binding Header,
+                RelativeSource={RelativeSource AncestorType=DataGridRow}}"
+                       VerticalAlignment="Center"
+                       Margin="8,0"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
