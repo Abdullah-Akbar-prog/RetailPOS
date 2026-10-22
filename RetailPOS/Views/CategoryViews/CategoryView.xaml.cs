@@ -8,13 +8,16 @@ namespace RetailPOS.Views;
 
 public partial class CategoryView : UserControl
 {
-    private CategoryViewModel? ViewModel =>
-        DataContext as CategoryViewModel;
+    private CategoryViewModel _viewModels;
 
-    public CategoryView()
+    public CategoryView(CategoryViewModel _viewModel)
     {
         InitializeComponent();
-        Loaded += CategoryView_Loaded;
+
+        _viewModels = _viewModel;
+        DataContext = _viewModel;
+
+        Loaded += async (_, _) => await _viewModel.LoadAsync();
     }
 
     private async void CategoryView_Loaded(
@@ -22,7 +25,7 @@ public partial class CategoryView : UserControl
     {
         Loaded -= CategoryView_Loaded;
 
-        if (ViewModel is null)
+        if (_viewModels is null)
         {
             MessageBox.Show(
                 "CategoryViewModel is not assigned to this view.",
@@ -34,7 +37,7 @@ public partial class CategoryView : UserControl
 
         try
         {
-            await ViewModel.LoadAsync();
+            await _viewModels.LoadAsync();
         }
         catch (Exception ex)
         {
@@ -55,7 +58,7 @@ public partial class CategoryView : UserControl
     private async void AddButton_Click(
         object sender, RoutedEventArgs e)
     {
-        if (ViewModel is null)
+        if (_viewModels is null)
             return;
 
         var dialog = new CategoryDialog("Add Category")
@@ -68,7 +71,7 @@ public partial class CategoryView : UserControl
 
         try
         {
-            await ViewModel.AddCategoryAsync(
+            await _viewModels.AddCategoryAsync(
                 dialog.EnteredCategoryName);
         }
         catch (Exception ex)
@@ -84,7 +87,7 @@ public partial class CategoryView : UserControl
     private async void EditButton_Click(
         object sender, RoutedEventArgs e)
     {
-        if (ViewModel is null ||
+        if (_viewModels is null ||
             (sender as FrameworkElement)?.Tag is not Category category)
             return;
 
@@ -100,7 +103,7 @@ public partial class CategoryView : UserControl
 
         try
         {
-            await ViewModel.UpdateCategoryAsync(
+            await _viewModels.UpdateCategoryAsync(
                 category, dialog.EnteredCategoryName);
         }
         catch (Exception ex)
@@ -116,7 +119,7 @@ public partial class CategoryView : UserControl
     private async void DeleteButton_Click(
         object sender, RoutedEventArgs e)
     {
-        if (ViewModel is null ||
+        if (_viewModels is null ||
             (sender as FrameworkElement)?.Tag is not Category category)
             return;
 
@@ -132,7 +135,7 @@ public partial class CategoryView : UserControl
 
         try
         {
-            await ViewModel.DeleteCategoryAsync(category);
+            await _viewModels.DeleteCategoryAsync(category);
         }
         catch (Exception ex)
         {

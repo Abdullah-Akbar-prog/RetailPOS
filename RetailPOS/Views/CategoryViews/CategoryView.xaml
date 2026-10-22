@@ -58,14 +58,15 @@
 
             <Button Grid.Column="1"
                     Content="+ Add New"
-                    Padding="20,12"
+Click="AddButton_Click"
+                    Padding="21,6"
                     VerticalAlignment="Center"
                     Background="#0D9488"
                     Foreground="White"
                     FontWeight="SemiBold"
                     BorderThickness="0"
                     Cursor="Hand"
-                    Click="AddButton_Click"/>
+                    />
         </Grid>
 
         <!-- Search -->
