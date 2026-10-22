@@ -1,27 +1,40 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
-namespace RetailPOS.Views.CategoryViews
+namespace RetailPOS.Views;
+
+public partial class CategoryDialog : Window
 {
-    /// <summary>
-    /// Interaction logic for CategoryDialog.xaml
-    /// </summary>
-    public partial class CategoryDialog : Window
+    public string EnteredCategoryName { get; private set; } = string.Empty;
+
+    public CategoryDialog(
+        string title,
+        string? existingCategoryName = null)
     {
-        public CategoryDialog()
+        InitializeComponent();
+
+        DialogTitle.Text = title;
+        CategoryNameTextBox.Text = existingCategoryName ?? string.Empty;
+
+        Loaded += (_, _) =>
         {
-            InitializeComponent();
+            CategoryNameTextBox.Focus();
+            CategoryNameTextBox.SelectAll();
+        };
+    }
+
+    private void SaveButton_Click(object sender, RoutedEventArgs e)
+    {
+        string name = CategoryNameTextBox.Text.Trim();
+
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            ValidationMessage.Text = "Category name is required.";
+            CategoryNameTextBox.Focus();
+            return;
         }
+
+        EnteredCategoryName = name;
+        DialogResult = true;
     }
 }

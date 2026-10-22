@@ -16,4 +16,63 @@
             Margin="12"
             BorderBrush="#E5EAF2"
             BorderThickness="1">
+
+        <StackPanel>
+            <TextBlock x:Name="DialogTitle"
+                Text="Add Category"
+                FontSize="22"
+                FontWeight="Bold"
+                Foreground="#1E293B"/>
+
+            <TextBlock Text="Enter the category information below."
+                Margin="0,7,0,24"
+                FontSize="13"
+                Foreground="#64748b"/>
+
+            <TextBlock Text="Category Name *"
+                       FontWeight="SemiBold"
+                       FontSize="12"
+                       Foreground="#475569"
+                       Margin="0,0,0,8"/>
+
+            <TextBox x:Name="CategoryNameTextBox"
+                     Height="42"
+                     Padding="10"
+                     FontSize="14"
+                     VerticalContentAlignment="Center"
+                     BorderBrush="#CBD5E1"
+                     CaretBrush="#0D9488"/>
+
+            <TextBlock x:Name="ValidationMessage"
+                       Foreground="#DC2626"
+                       FontSize="12"
+                       Margin="0,7,0,0"/>
+
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Right"
+                        Margin="0,26,0,0">
+
+                <Button Content="Cancel"
+                        Width="95"
+                        Height="38"
+                        Margin="0,0,10,0"
+                        Background="#F1F5F9"
+                        Foreground="#475569"
+                        BorderThickness="0"
+                        IsCancel="True"
+                        Cursor="Hand"/>
+
+                <Button Content="Save Category"
+                        Width="125"
+                        Height="38"
+                        Background="#0D9488"
+                        Foreground="White"
+                        FontWeight="SemiBold"
+                        BorderThickness="0"
+                        IsDefault="True"
+                        Click="SaveButton_Click"
+                        Cursor="Hand"/>
+            </StackPanel>
+        </StackPanel>
+    </Border>
 </Window>
