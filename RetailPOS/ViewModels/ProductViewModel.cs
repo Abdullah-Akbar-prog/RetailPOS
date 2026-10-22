@@ -1,5 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
+﻿
+using CommunityToolkit.Mvvm.ComponentModel;
 using RetailPOS.Models;
 using RetailPOS.Services;
 using System.Collections.ObjectModel;
@@ -19,33 +19,6 @@ public partial class ProductViewModel : ObservableObject
     [ObservableProperty]
     private Product? selectedProduct;
 
-    [ObservableProperty]
-    private string name = string.Empty;
-
-    [ObservableProperty]
-    private string sku = string.Empty;
-
-    [ObservableProperty]
-    private decimal costPrice;
-
-    [ObservableProperty]
-    private decimal sellingPrice;
-
-    [ObservableProperty]
-    private int stockQuantity;
-
-    [ObservableProperty]
-    private int reorderLevel = 5;
-
-    [ObservableProperty]
-    private bool isActive = true;
-
-    [ObservableProperty]
-    private Brand? selectedBrand;
-
-    [ObservableProperty]
-    private Category? selectedCategory;
-
     public ProductViewModel(
         ProductService productService,
         BrandService brandService,
@@ -56,7 +29,6 @@ public partial class ProductViewModel : ObservableObject
         _categoryService = categoryService;
     }
 
-    [RelayCommand]
     public async Task LoadAsync()
     {
         var products = await _productService.GetAllAsync();
@@ -76,106 +48,95 @@ public partial class ProductViewModel : ObservableObject
             Categories.Add(category);
     }
 
-    [RelayCommand]
-    private async Task SaveAsync()
+    public async Task<bool> AddProductAsync(
+        string name,
+        string sku,
+        decimal costPrice,
+        decimal sellingPrice,
+        int stockQuantity,
+        int reorderLevel,
+        bool isActive,
+        Brand? brand,
+        Category? category)
     {
-        if (string.IsNullOrWhiteSpace(Name) ||
-            string.IsNullOrWhiteSpace(Sku) ||
-            SelectedBrand is null ||
-            SelectedCategory is null)
+        if (!IsValid(name, sku, costPrice, sellingPrice,
+                stockQuantity, reorderLevel, brand, category))
+            return false;
+
+        var product = new Product
         {
-            return;
-        }
+            Name = name.Trim(),
+            SKU = sku.Trim(),
+            CostPrice = costPrice,
+            SellingPrice = sellingPrice,
+            StockQuantity = stockQuantity,
+            ReorderLevel = reorderLevel,
+            IsActive = isActive,
+            BrandId = brand!.BrandId,
+            CategoryId = category!.CategoryId
+        };
 
-        if (CostPrice < 0 ||
-            SellingPrice < 0 ||
-            StockQuantity < 0 ||
-            ReorderLevel < 0)
-        {
-            return;
-        }
+        await _productService.AddAsync(product);
+        await LoadAsync();
 
-        if (SelectedProduct is null)
-        {
-            var product = new Product
-            {
-                Name = Name.Trim(),
-                SKU = Sku.Trim(),
-                CostPrice = CostPrice,
-                SellingPrice = SellingPrice,
-                StockQuantity = StockQuantity,
-                ReorderLevel = ReorderLevel,
-                IsActive = IsActive,
-                BrandId = SelectedBrand.BrandId,
-                CategoryId = SelectedCategory.CategoryId
-            };
+        return true;
+    }
 
-            await _productService.AddAsync(product);
-        }
-        else
-        {
-            SelectedProduct.Name = Name.Trim();
-            SelectedProduct.SKU = Sku.Trim();
-            SelectedProduct.CostPrice = CostPrice;
-            SelectedProduct.SellingPrice = SellingPrice;
-            SelectedProduct.StockQuantity = StockQuantity;
-            SelectedProduct.ReorderLevel = ReorderLevel;
-            SelectedProduct.IsActive = IsActive;
-            SelectedProduct.BrandId = SelectedBrand.BrandId;
-            SelectedProduct.CategoryId = SelectedCategory.CategoryId;
+    public async Task<bool> UpdateProductAsync(
+        Product product,
+        string name,
+        string sku,
+        decimal costPrice,
+        decimal sellingPrice,
+        int stockQuantity,
+        int reorderLevel,
+        bool isActive,
+        Brand? brand,
+        Category? category)
+    {
+        if (!IsValid(name, sku, costPrice, sellingPrice,
+                stockQuantity, reorderLevel, brand, category))
+            return false;
 
-            await _productService.UpdateAsync(SelectedProduct);
-        }
+        product.Name = name.Trim();
+        product.SKU = sku.Trim();
+        product.CostPrice = costPrice;
+        product.SellingPrice = sellingPrice;
+        product.StockQuantity = stockQuantity;
+        product.ReorderLevel = reorderLevel;
+        product.IsActive = isActive;
+        product.BrandId = brand!.BrandId;
+        product.CategoryId = category!.CategoryId;
 
-        Clear();
+        await _productService.UpdateAsync(product);
+        await LoadAsync();
+
+        return true;
+    }
+
+    public async Task DeleteProductAsync(Product product)
+    {
+        await _productService.DeleteAsync(product.Id);
         await LoadAsync();
     }
 
-    [RelayCommand]
-    private void Edit()
+    private static bool IsValid(
+        string name,
+        string sku,
+        decimal costPrice,
+        decimal sellingPrice,
+        int stockQuantity,
+        int reorderLevel,
+        Brand? brand,
+        Category? category)
     {
-        if (SelectedProduct is null)
-            return;
-
-        Name = SelectedProduct.Name;
-        Sku = SelectedProduct.SKU;
-        CostPrice = SelectedProduct.CostPrice;
-        SellingPrice = SelectedProduct.SellingPrice;
-        StockQuantity = SelectedProduct.StockQuantity;
-        ReorderLevel = SelectedProduct.ReorderLevel;
-        IsActive = SelectedProduct.IsActive;
-
-        SelectedBrand = Brands.FirstOrDefault(
-            b => b.BrandId == SelectedProduct.Brand.BrandId);
-
-        SelectedCategory = Categories.FirstOrDefault(
-            c => c.CategoryId == SelectedProduct.Category.CategoryId);
-    }
-
-    [RelayCommand]
-    private async Task DeleteAsync()
-    {
-        if (SelectedProduct is null)
-            return;
-
-        await _productService.DeleteAsync(SelectedProduct.Id);
-
-        Clear();
-        await LoadAsync();
-    }
-
-    [RelayCommand]
-    private void Clear()
-    {
-        SelectedProduct = null;
-        Name = string.Empty;
-        Sku = string.Empty;
-        CostPrice = 0;
-        SellingPrice = 0;
-        StockQuantity = 0;
-        ReorderLevel = 5;
-        IsActive = true;
-        SelectedBrand = null;
-        SelectedCategory = null;
+        return !string.IsNullOrWhiteSpace(name)
+            && !string.IsNullOrWhiteSpace(sku)
+            && costPrice >= 0
+            && sellingPrice >= 0
+            && stockQuantity >= 0
+            && reorderLevel >= 0
+            && brand is not null
+            && category is not null;
     }
 }

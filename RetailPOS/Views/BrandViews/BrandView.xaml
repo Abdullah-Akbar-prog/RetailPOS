@@ -153,9 +153,17 @@
                         </DataGridTemplateColumn>
 
                         <DataGridTextColumn Header="BRAND NAME"
-                                            Binding="{Binding BrandName}"
-                                            Width="*"
-                                            MinWidth="150"/>
+                            Binding="{Binding BrandName}"
+                            Width="*"
+                            MinWidth="150">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                    <Setter Property="Margin" Value="8,0"/>
+                                    <Setter Property="TextWrapping" Value="NoWrap"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
 
                         <DataGridTemplateColumn Header="ACTIONS"
                                                 Width="190">

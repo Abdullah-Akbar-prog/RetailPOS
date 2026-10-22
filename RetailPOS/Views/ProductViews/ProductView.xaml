@@ -5,579 +5,187 @@
              FontFamily="Segoe UI">
 
     <UserControl.Resources>
-
-        <SolidColorBrush x:Key="AccentBrush" Color="#0D9488"/>
-        <SolidColorBrush x:Key="MutedBrush" Color="#64748B"/>
-        <SolidColorBrush x:Key="CardBorderBrush" Color="#E5EAF2"/>
-
-        <Style x:Key="FieldLabel" TargetType="{x:Type TextBlock}">
+        <Style x:Key="ActionButton" TargetType="Button">
+            <Setter Property="Padding" Value="12,7"/>
+            <Setter Property="Margin" Value="3"/>
+            <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="FontSize" Value="12"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+
+        <Style TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="#F8FAFC"/>
             <Setter Property="Foreground" Value="#475569"/>
-            <Setter Property="Margin" Value="0,0,0,7"/>
-        </Style>
-
-        <Style x:Key="ProductTextBox" TargetType="{x:Type TextBox}">
-            <Setter Property="Height" Value="38"/>
-            <Setter Property="Padding" Value="10,7"/>
-            <Setter Property="FontSize" Value="13"/>
-            <Setter Property="Foreground" Value="#1E293B"/>
-            <Setter Property="CaretBrush" Value="#0D9488"/>
-            <Setter Property="BorderBrush" Value="#CBD5E1"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Setter Property="Background" Value="White"/>
-        </Style>
-
-        <Style x:Key="ProductComboBox" TargetType="{x:Type ComboBox}">
-            <Setter Property="Height" Value="38"/>
-            <Setter Property="Padding" Value="8,5"/>
-            <Setter Property="FontSize" Value="13"/>
-            <Setter Property="Foreground" Value="#1E293B"/>
-            <Setter Property="BorderBrush" Value="#CBD5E1"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Background" Value="White"/>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
-        </Style>
-
-        <!-- Visible checkbox with a custom teal tick -->
-        <Style x:Key="VisibleCheckBox" TargetType="{x:Type CheckBox}">
-            <Setter Property="Foreground" Value="#1E293B"/>
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type CheckBox}">
-                        <StackPanel Orientation="Horizontal">
-                            <Border x:Name="CheckBorder"
-                                    Width="19"
-                                    Height="19"
-                                    Background="White"
-                                    BorderBrush="#94A3B8"
-                                    BorderThickness="1.5"
-                                    CornerRadius="4"
-                                    VerticalAlignment="Center">
-                                <TextBlock x:Name="CheckMark"
-                                           Text="✓"
-                                           FontSize="14"
-                                           FontWeight="Bold"
-                                           Foreground="White"
-                                           HorizontalAlignment="Center"
-                                           VerticalAlignment="Center"
-                                           Visibility="Collapsed"/>
-                            </Border>
-
-                            <ContentPresenter Margin="9,0,0,0"
-                                              VerticalAlignment="Center"/>
-                        </StackPanel>
-
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsChecked" Value="True">
-                                <Setter TargetName="CheckBorder"
-                                        Property="Background"
-                                        Value="#0D9488"/>
-                                <Setter TargetName="CheckBorder"
-                                        Property="BorderBrush"
-                                        Value="#0D9488"/>
-                                <Setter TargetName="CheckMark"
-                                        Property="Visibility"
-                                        Value="Visible"/>
-                            </Trigger>
-
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="CheckBorder"
-                                        Property="BorderBrush"
-                                        Value="#0D9488"/>
-                            </Trigger>
-
-                            <Trigger Property="IsEnabled" Value="False">
-                                <Setter Property="Opacity" Value="0.5"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <Style x:Key="ActionButton" TargetType="{x:Type Button}">
-            <Setter Property="Padding" Value="16,10"/>
-            <Setter Property="Margin" Value="0,0,8,0"/>
-            <Setter Property="FontSize" Value="12"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Padding" Value="12,10"/>
+            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+            <Setter Property="BorderBrush" Value="#E5EAF2"/>
         </Style>
 
-        <Style x:Key="InventoryGrid" TargetType="{x:Type DataGrid}">
-            <Setter Property="Background" Value="White"/>
-            <Setter Property="Foreground" Value="#334155"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="RowBackground" Value="White"/>
-            <Setter Property="AlternatingRowBackground" Value="#F8FAFC"/>
-            <Setter Property="GridLinesVisibility" Value="Horizontal"/>
-            <Setter Property="HorizontalGridLinesBrush" Value="#EDF1F5"/>
-            <Setter Property="VerticalGridLinesBrush" Value="#EDF1F5"/>
-            <Setter Property="RowHeight" Value="42"/>
-            <Setter Property="ColumnHeaderHeight" Value="42"/>
-            <Setter Property="FontSize" Value="12"/>
-            <Setter Property="CanUserAddRows" Value="False"/>
-            <Setter Property="IsReadOnly" Value="True"/>
-            <Setter Property="AutoGenerateColumns" Value="False"/>
-        </Style>
-
-        <!-- Placeholder displayed when no dropdown item is selected -->
-        <Style x:Key="PlaceholderComboBox" TargetType="{x:Type ComboBox}">
-            <Setter Property="Height" Value="38"/>
-            <Setter Property="FontSize" Value="13"/>
-            <Setter Property="Foreground" Value="#64748B"/>
-            <Setter Property="Background" Value="White"/>
-            <Setter Property="BorderBrush" Value="#CBD5E1"/>
-            <Setter Property="BorderThickness" Value="1"/>
+        <Style TargetType="DataGridCell">
             <Setter Property="Padding" Value="8,5"/>
+            <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type ComboBox}">
-                        <Grid>
-                            <Border x:Name="ComboBorder"
-                                    Background="{TemplateBinding Background}"
-                                    BorderBrush="{TemplateBinding BorderBrush}"
-                                    BorderThickness="{TemplateBinding BorderThickness}"
-                                    CornerRadius="5"/>
-
-                            <Grid Margin="8,0,5,0">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-
-                                <ContentPresenter x:Name="SelectionPresenter"
-                                                  Grid.Column="0"
-                                                  VerticalAlignment="Center"
-                                                  HorizontalAlignment="Left"
-                                                  Content="{TemplateBinding SelectionBoxItem}"
-                                                  ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
-                                                  ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
-                                                  IsHitTestVisible="False"/>
-
-                                <TextBlock x:Name="PlaceholderText"
-                                           Grid.Column="0"
-                                           Text="{TemplateBinding Tag}"
-                                           Foreground="#94A3B8"
-                                           VerticalAlignment="Center"
-                                           IsHitTestVisible="False"
-                                           Visibility="Collapsed"/>
-
-                                <ToggleButton Grid.Column="1"
-                                              Focusable="False"
-                                              ClickMode="Press"
-                                              IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
-                                              Background="Transparent"
-                                              BorderThickness="0">
-                                    <TextBlock Text="▼"
-                                               FontSize="10"
-                                               Foreground="#64748B"
-                                               VerticalAlignment="Center"
-                                               Margin="6,0"/>
-                                </ToggleButton>
-                            </Grid>
-
-                            <Popup x:Name="PART_Popup"
-                                   Placement="Bottom"
-                                   AllowsTransparency="True"
-                                   Focusable="False"
-                                   IsOpen="{TemplateBinding IsDropDownOpen}"
-                                   PopupAnimation="Slide">
-                                <Border Background="White"
-                                        BorderBrush="#CBD5E1"
-                                        BorderThickness="1"
-                                        CornerRadius="5"
-                                        MinWidth="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}"
-                                        MaxHeight="240">
-                                    <ScrollViewer>
-                                        <ItemsPresenter/>
-                                    </ScrollViewer>
-                                </Border>
-                            </Popup>
-                        </Grid>
-
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="HasItems" Value="False">
-                                <Setter TargetName="PlaceholderText"
-                                        Property="Visibility"
-                                        Value="Visible"/>
-                            </Trigger>
-
-                            <Trigger Property="SelectedIndex" Value="-1">
-                                <Setter TargetName="PlaceholderText"
-                                        Property="Visibility"
-                                        Value="Visible"/>
-                                <Setter TargetName="SelectionPresenter"
-                                        Property="Visibility"
-                                        Value="Collapsed"/>
-                            </Trigger>
-
-                            <Trigger Property="IsKeyboardFocusWithin" Value="True">
-                                <Setter TargetName="ComboBorder"
-                                        Property="BorderBrush"
-                                        Value="#0D9488"/>
-                            </Trigger>
-
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="ComboBorder"
-                                        Property="BorderBrush"
-                                        Value="#0D9488"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
         </Style>
-
     </UserControl.Resources>
 
-    <ScrollViewer VerticalScrollBarVisibility="Auto"
-                  HorizontalScrollBarVisibility="Disabled">
+    <Grid Margin="26">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-        <StackPanel Margin="26">
+        <!-- Page heading -->
+        <Grid Grid.Row="0" Margin="0,0,0,24">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
 
-            <!-- Page Header -->
-            <Grid Margin="0,0,0,24">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
+            <StackPanel>
+                <TextBlock Text="Product Management"
+                           FontSize="26"
+                           FontWeight="Bold"
+                           Foreground="#1E293B"/>
 
-                <StackPanel>
-                    <TextBlock Text="Product Management"
-                               FontSize="26"
-                               FontWeight="Bold"
+                <TextBlock Text="Manage products, prices, stock levels and categories."
+                           FontSize="13"
+                           Foreground="#64748B"
+                           Margin="0,7,0,0"/>
+            </StackPanel>
+
+            <Button Grid.Column="1"
+                    Content="+ Add New"
+                    Padding="21,6"
+                    VerticalAlignment="Center"
+                    Background="#0D9488"
+                    Foreground="White"
+                    FontWeight="SemiBold"
+                    BorderThickness="0"
+                    Cursor="Hand"
+                    Click="AddButton_Click"/>
+        </Grid>
+
+        <!-- Product inventory -->
+        <Border Grid.Row="1"
+                Background="White"
+                BorderBrush="#E5EAF2"
+                BorderThickness="1"
+                CornerRadius="14"
+                Padding="18">
+
+            <DockPanel>
+                <StackPanel DockPanel.Dock="Top" Margin="0,0,0,16">
+                    <TextBlock Text="Product Inventory"
+                               FontSize="17"
+                               FontWeight="SemiBold"
                                Foreground="#1E293B"/>
 
-                    <TextBlock Text="Manage products, prices, stock levels and categories."
-                               FontSize="13"
-                               Foreground="#64748B"
-                               Margin="0,7,0,0"/>
-                </StackPanel>
-
-                <Border Grid.Column="1"
-                        Background="#E6F6F3"
-                        CornerRadius="9"
-                        Padding="12,8"
-                        VerticalAlignment="Center">
-                    <TextBlock Text="Inventory"
+                    <TextBlock Text="Add, edit or delete products using the row actions."
                                FontSize="12"
-                               FontWeight="SemiBold"
-                               Foreground="#0F766E"/>
-                </Border>
-            </Grid>
-
-            <!-- Product Form Card -->
-            <Border Background="White"
-                    CornerRadius="14"
-                    Padding="22"
-                    Margin="0,0,0,22"
-                    BorderBrush="#E5EAF2"
-                    BorderThickness="1">
-
-                <StackPanel>
-                    <StackPanel Margin="0,0,0,20">
-                        <TextBlock Text="Product Details"
-                                   FontSize="17"
-                                   FontWeight="SemiBold"
-                                   Foreground="#1E293B"/>
-
-                        <TextBlock Text="Enter the product information below."
-                                   FontSize="12"
-                                   Foreground="#94A3B8"
-                                   Margin="0,5,0,0"/>
-                    </StackPanel>
-
-                    <!-- Form Fields -->
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-
-                        <!-- Product Name -->
-                        <StackPanel Grid.Row="0" Grid.Column="0"
-                                    Margin="0,0,12,16">
-                            <TextBlock Text="Product Name *"
-                                       Style="{StaticResource FieldLabel}"/>
-                            <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
-                                     Style="{StaticResource ProductTextBox}"
-                                     ToolTip="Enter product name"/>
-                        </StackPanel>
-
-                        <!-- SKU -->
-                        <StackPanel Grid.Row="0" Grid.Column="1"
-                                    Margin="12,0,0,16">
-                            <TextBlock Text="SKU"
-                                       Style="{StaticResource FieldLabel}"/>
-                            <TextBox Text="{Binding Sku, UpdateSourceTrigger=PropertyChanged}"
-                                     Style="{StaticResource ProductTextBox}"
-                                     ToolTip="Enter stock keeping unit"/>
-                        </StackPanel>
-
-                        <!-- Cost Price -->
-                        <StackPanel Grid.Row="1" Grid.Column="0"
-                                    Margin="0,0,12,16">
-                            <TextBlock Text="Cost Price"
-                                       Style="{StaticResource FieldLabel}"/>
-                            <TextBox Text="{Binding CostPrice, UpdateSourceTrigger=PropertyChanged}"
-                                     Style="{StaticResource ProductTextBox}"/>
-                        </StackPanel>
-
-                        <!-- Selling Price -->
-                        <StackPanel Grid.Row="1" Grid.Column="1"
-                                    Margin="12,0,0,16">
-                            <TextBlock Text="Selling Price"
-                                       Style="{StaticResource FieldLabel}"/>
-                            <TextBox Text="{Binding SellingPrice, UpdateSourceTrigger=PropertyChanged}"
-                                     Style="{StaticResource ProductTextBox}"/>
-                        </StackPanel>
-
-                        <!-- Stock Quantity -->
-                        <StackPanel Grid.Row="2" Grid.Column="0"
-                                    Margin="0,0,12,16">
-                            <TextBlock Text="Stock Quantity"
-                                       Style="{StaticResource FieldLabel}"/>
-                            <TextBox Text="{Binding StockQuantity, UpdateSourceTrigger=PropertyChanged}"
-                                     Style="{StaticResource ProductTextBox}"
-                                     ToolTip="Enter the available stock quantity"/>
-                        </StackPanel>
-
-                        <!-- Reorder Level -->
-                        <StackPanel Grid.Row="2" Grid.Column="1"
-                                    Margin="12,0,0,16">
-                            <TextBlock Text="Reorder Level"
-                                       Style="{StaticResource FieldLabel}"/>
-                            <TextBox Text="{Binding ReorderLevel, UpdateSourceTrigger=PropertyChanged}"
-                                     Style="{StaticResource ProductTextBox}"/>
-                        </StackPanel>
-
-                        <!-- Brand -->
-                        <StackPanel Grid.Row="3" Grid.Column="0"
-                                    Margin="0,0,12,16">
-                            <TextBlock Text="Brand *"
-                                       Style="{StaticResource FieldLabel}"/>
-                            <ComboBox Style="{StaticResource PlaceholderComboBox}"
-                                      ItemsSource="{Binding Brands}"
-                                      SelectedItem="{Binding SelectedBrand, Mode=TwoWay}"
-                                      DisplayMemberPath="BrandName"
-                                      SelectedValuePath="BrandId"
-                                      Tag="Select the brand"
-                                      IsEditable="False"
-                                      IsTextSearchEnabled="True"
-                                      ToolTip="Select a brand"/>
-                        </StackPanel>
-
-                        <!-- Category -->
-                        <StackPanel Grid.Row="3" Grid.Column="1"
-                                    Margin="12,0,0,16">
-                            <TextBlock Text="Category *"
-                                       Style="{StaticResource FieldLabel}"/>
-                            <ComboBox Style="{StaticResource PlaceholderComboBox}"
-                                      ItemsSource="{Binding Categories}"
-                                      SelectedItem="{Binding SelectedCategory, Mode=TwoWay}"
-                                      DisplayMemberPath="CategoryName"
-                                      SelectedValuePath="CategoryId"
-                                      Tag="Select the category"
-                                      IsEditable="False"
-                                      IsTextSearchEnabled="True"
-                                      ToolTip="Select a category"/>
-                        </StackPanel>
-                    </Grid>
-
-                    <!-- Active Product -->
-                    <Border Background="#F8FAFC"
-                            CornerRadius="8"
-                            Padding="12"
-                            Margin="0,0,0,18">
-                        <CheckBox Content="Active"
-                                  Style="{StaticResource VisibleCheckBox}"
-                                  IsChecked="{Binding IsActive, Mode=TwoWay}"
-                                  ToolTip="Enable or disable this product"/>
-                    </Border>
-
-                    <!-- Action Buttons -->
-                    <WrapPanel>
-                        <Button Content="Save Product"
-                                Command="{Binding SaveCommand}"
-                                Style="{StaticResource ActionButton}"
-                                Background="#0D9488"
-                                Foreground="White"/>
-
-                        <Button Content="Edit Selected"
-                                Command="{Binding EditCommand}"
-                                Style="{StaticResource ActionButton}"
-                                Background="#E8F0FE"
-                                Foreground="#2563EB"/>
-
-                        <Button Content="Delete Selected"
-                                Command="{Binding DeleteCommand}"
-                                Style="{StaticResource ActionButton}"
-                                Background="#FEF2F2"
-                                Foreground="#DC2626"/>
-
-                        <Button Content="Clear Form"
-                                Command="{Binding ClearCommand}"
-                                Style="{StaticResource ActionButton}"
-                                Background="#F1F5F9"
-                                Foreground="#475569"/>
-                    </WrapPanel>
+                               Foreground="#94A3B8"
+                               Margin="0,5,0,0"/>
                 </StackPanel>
-            </Border>
 
-            <!-- Inventory Table Card -->
-            <Border Background="White"
-                    CornerRadius="14"
-                    Padding="20"
-                    BorderBrush="#E5EAF2"
-                    BorderThickness="1">
+                <DataGrid x:Name="ProductsDataGrid"
+                          ItemsSource="{Binding Products}"
+                          SelectedItem="{Binding SelectedProduct, Mode=TwoWay}"
+                          LoadingRow="ProductsDataGrid_LoadingRow"
+                          AutoGenerateColumns="False"
+                          IsReadOnly="True"
+                          CanUserAddRows="False"
+                          SelectionMode="Single"
+                          SelectionUnit="FullRow"
+                          RowHeight="48"
+                          ColumnHeaderHeight="42"
+                          GridLinesVisibility="Horizontal"
+                          HorizontalGridLinesBrush="#EDF1F5"
+                          BorderThickness="0"
+                          Background="White"
+                          Foreground="#334155"
+                          FontSize="13">
 
-                <StackPanel>
-                    <StackPanel Margin="0,0,0,18">
-                        <TextBlock Text="Product Inventory"
-                                   FontSize="17"
-                                   FontWeight="SemiBold"
-                                   Foreground="#1E293B"/>
+                    <DataGrid.RowStyle>
+                        <Style TargetType="DataGridRow">
+                            <Setter Property="VerticalContentAlignment" Value="Center"/>
+                        </Style>
+                    </DataGrid.RowStyle>
 
-                        <TextBlock Text="Select a product to edit or delete it."
-                                   FontSize="12"
-                                   Foreground="#94A3B8"
-                                   Margin="0,5,0,0"/>
-                    </StackPanel>
+                    <DataGrid.Columns>
+                        <!-- Serial number -->
+                        <DataGridTemplateColumn Header="SR#" Width="60">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock
+                                        Text="{Binding Header, RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}"
+                                        VerticalAlignment="Center"
+                                        Margin="8,0"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
 
-                    <DataGrid ItemsSource="{Binding Products}"
-                              SelectedItem="{Binding SelectedProduct, Mode=TwoWay}"
-                              AutoGenerateColumns="False"
-                              Style="{StaticResource InventoryGrid}"
-                              MinHeight="280"
-                              MaxHeight="440"
-                              HeadersVisibility="Column"
-                              SelectionMode="Single"
-                              SelectionUnit="FullRow"
-                              CanUserResizeRows="False"
-                              CanUserSortColumns="True"
-                              AlternationCount="2">
+                        <DataGridTextColumn Header="PRODUCT"
+                                            Binding="{Binding Name}"
+                                            Width="*"
+                                            MinWidth="130"/>
 
-                        <DataGrid.ColumnHeaderStyle>
-                            <Style TargetType="{x:Type DataGridColumnHeader}">
-                                <Setter Property="Background" Value="#F8FAFC"/>
-                                <Setter Property="Foreground" Value="#475569"/>
-                                <Setter Property="FontWeight" Value="SemiBold"/>
-                                <Setter Property="FontSize" Value="11"/>
-                                <Setter Property="Padding" Value="10,8"/>
-                                <Setter Property="BorderThickness" Value="0,0,0,1"/>
-                                <Setter Property="BorderBrush" Value="#E5EAF2"/>
-                            </Style>
-                        </DataGrid.ColumnHeaderStyle>
+                        <DataGridTextColumn Header="SKU"
+                                            Binding="{Binding SKU}"
+                                            Width="100"/>
 
-                        <DataGrid.CellStyle>
-                            <Style TargetType="{x:Type DataGridCell}">
-                                <Setter Property="Padding" Value="8,4"/>
-                                <Setter Property="BorderThickness" Value="0"/>
-                                <Setter Property="Foreground" Value="#334155"/>
-                                <Setter Property="Background" Value="Transparent"/>
-                                <Setter Property="VerticalContentAlignment" Value="Center"/>
-                                <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                        <DataGridTextColumn Header="BRAND"
+                                            Binding="{Binding Brand.BrandName}"
+                                            Width="110"/>
 
-                                <Style.Triggers>
-                                    <Trigger Property="IsSelected" Value="True">
-                                        <Setter Property="Background" Value="#E6F6F3"/>
-                                        <Setter Property="Foreground" Value="#115E59"/>
-                                        <Setter Property="BorderThickness" Value="0"/>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </DataGrid.CellStyle>
+                        <DataGridTextColumn Header="CATEGORY"
+                                            Binding="{Binding Category.CategoryName}"
+                                            Width="115"/>
 
-                        <DataGrid.RowStyle>
-                            <Style TargetType="{x:Type DataGridRow}">
-                                <Setter Property="Foreground" Value="#334155"/>
-                                <Setter Property="Background" Value="White"/>
-                                <Setter Property="BorderThickness" Value="0"/>
-                                <Setter Property="SnapsToDevicePixels" Value="True"/>
+                        <DataGridTextColumn Header="COST"
+                                            Binding="{Binding CostPrice, StringFormat={}{0:N2}}"
+                                            Width="90"/>
 
-                                <Style.Triggers>
+                        <DataGridTextColumn Header="SELLING PRICE"
+                                            Binding="{Binding SellingPrice, StringFormat={}{0:N2}}"
+                                            Width="110"/>
 
-                                    <!-- Selected row -->
-                                    <Trigger Property="IsSelected" Value="True">
-                                        <Setter Property="Background" Value="#E6F6F3"/>
-                                        <Setter Property="Foreground" Value="#115E59"/>
-                                        <Setter Property="BorderBrush" Value="#99F6E4"/>
-                                        <Setter Property="BorderThickness" Value="0,1,0,1"/>
-                                    </Trigger>
+                        <DataGridTextColumn Header="STOCK"
+                                            Binding="{Binding StockQuantity}"
+                                            Width="70"/>
 
-                                    <!-- Hover effect -->
-                                    <MultiTrigger>
-                                        <MultiTrigger.Conditions>
-                                            <Condition Property="IsMouseOver" Value="True"/>
-                                            <Condition Property="IsSelected" Value="False"/>
-                                        </MultiTrigger.Conditions>
-                                        <Setter Property="Background" Value="#F0FDFA"/>
-                                    </MultiTrigger>
+                        <DataGridCheckBoxColumn Header="ACTIVE"
+                                                Binding="{Binding IsActive}"
+                                                Width="65"/>
 
-                                    <!-- Disabled row -->
-                                    <Trigger Property="IsEnabled" Value="False">
-                                        <Setter Property="Foreground" Value="#94A3B8"/>
-                                    </Trigger>
+                        <!-- Row actions -->
+                        <DataGridTemplateColumn Header="ACTIONS" Width="165">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal"
+                                                VerticalAlignment="Center"
+                                                HorizontalAlignment="Center">
 
-                                </Style.Triggers>
-                            </Style>
-                        </DataGrid.RowStyle>
+                                        <Button Content="Edit"
+                                                Style="{StaticResource ActionButton}"
+                                                Background="#E6F6F3"
+                                                Foreground="#0F766E"
+                                                Tag="{Binding}"
+                                                Click="EditButton_Click"/>
 
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="ID"
-                                                Binding="{Binding Id}"
-                                                Width="55"/>
-
-                            <DataGridTextColumn Header="PRODUCT"
-                                                Binding="{Binding Name}"
-                                                Width="*"
-                                                MinWidth="130"/>
-
-                            <DataGridTextColumn Header="SKU"
-                                                Binding="{Binding SKU}"
-                                                Width="100"/>
-
-                            <DataGridTextColumn Header="BRAND"
-                                                Binding="{Binding Brand.BrandName}"
-                                                Width="110"/>
-
-                            <DataGridTextColumn Header="CATEGORY"
-                                                Binding="{Binding Category.CategoryName}"
-                                                Width="115"/>
-
-                            <DataGridTextColumn Header="COST"
-                                                Binding="{Binding CostPrice, StringFormat={}{0:N2}}"
-                                                Width="90"/>
-
-                            <DataGridTextColumn Header="SELLING PRICE"
-                                                Binding="{Binding SellingPrice, StringFormat={}{0:N2}}"
-                                                Width="110"/>
-
-                            <DataGridTextColumn Header="STOCK"
-                                                Binding="{Binding StockQuantity}"
-                                                Width="70"/>
-
-                            <DataGridCheckBoxColumn Header="ACTIVE"
-                                                    Binding="{Binding IsActive}"
-                                                    Width="65"/>
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </StackPanel>
-            </Border>
-        </StackPanel>
-    </ScrollViewer>
+                                        <Button Content="Delete"
+                                                Style="{StaticResource ActionButton}"
+                                                Background="#FEF2F2"
+                                                Foreground="#DC2626"
+                                                Tag="{Binding}"
+                                                Click="DeleteButton_Click"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </DockPanel>
+        </Border>
+    </Grid>
 </UserControl>

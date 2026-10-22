@@ -1,4 +1,6 @@
-﻿using RetailPOS.ViewModels;
+﻿
+using RetailPOS.Models;
+using RetailPOS.ViewModels;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -15,13 +17,63 @@ public partial class ProductView : UserControl
         _viewModel = viewModel;
         DataContext = _viewModel;
 
-        Loaded += ProductView_Loaded;
+        Loaded += async (_, _) => await _viewModel.LoadAsync();
     }
 
-    private async void ProductView_Loaded(
-        object sender, RoutedEventArgs e)
+    private void AddButton_Click(object sender, RoutedEventArgs e)
     {
-        Loaded -= ProductView_Loaded;
-        await _viewModel.LoadAsync();
+        var dialog = new ProductDialog(_viewModel)
+        {
+            Owner = Window.GetWindow(this)
+        };
+
+        dialog.ShowDialog();
+    }
+
+    private void EditButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (sender is not Button button || button.Tag is not Product product)
+            return;
+
+        var dialog = new ProductDialog(_viewModel, product)
+        {
+            Owner = Window.GetWindow(this)
+        };
+
+        dialog.ShowDialog();
+    }
+
+    private async void DeleteButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (sender is not Button button || button.Tag is not Product product)
+            return;
+
+        var result = MessageBox.Show(
+            $"Are you sure you want to delete '{product.Name}'?",
+            "Confirm Delete",
+            MessageBoxButton.YesNo,
+            MessageBoxImage.Warning);
+
+        if (result != MessageBoxResult.Yes)
+            return;
+
+        try
+        {
+            await _viewModel.DeleteProductAsync(product);
+        }
+        catch (System.Exception ex)
+        {
+            MessageBox.Show(
+                $"Could not delete product: {ex.Message}",
+                "Delete Error",
+                MessageBoxButton.OK,
+                MessageBoxImage.Error);
+        }
+    }
+
+    private void ProductsDataGrid_LoadingRow(
+        object sender, DataGridRowEventArgs e)
+    {
+        e.Row.Header = (e.Row.GetIndex() + 1).ToString();
     }
 }
