@@ -140,4 +140,11 @@ public partial class BrandView : UserControl
                 MessageBoxImage.Error);
         }
     }
+
+    private void BrandsDataGrid_LoadingRow(
+        object sender,
+        DataGridRowEventArgs e)
+    {
+        e.Row.Header = e.Row.GetIndex() + 1;
+    }
 }
